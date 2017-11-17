@@ -24,7 +24,7 @@
 
 \autor{Matheus Mendes da Silva Santos}
 
-\orientador{MSc. Prof. Chauã Coluene Queirolo Barbosa da Silva}
+\orientador{Prof. MSc. Chauã Coluene Queirolo Barbosa da Silva}
 
 \preambulo{Trabalho de Conclusão de Curso apresentado ao curso de Bacharelado 
 em Ciência da Computação da Faculdade de Ciências Exatas e de Tecnologia da 
@@ -53,7 +53,7 @@ Universidade Tuiuti do Paraná, como requisito à obtenção ao grau de Bacharel
 
 % Resumo
 \begin{resumo}
-Com o surgimento e a viabilização econômica de sistemas e projetos embarcados, o ensino de computação se popularizou no meio educacional, fazendo o número de pesquisadores e usuários crescer rapidamente. Por isso a área de miniaturização de computadores e adoção dos sistemas embarcados vem colocando-se no meio profissional de maneira gradativa. O presente trabalho trata dos conceitos de Processamento Digital de Imagens aplicados ao Raspberry Pi, módulo de computação em-barcada, e sua câmera. Utilizando técnicas de segmentação no vídeo adquirido, foi desenvolvido um método de segmentação de pessoas em tempo real.  Este projeto pode ser aplicado em sistemas de vigilância, segurança e rastreamento. Os conhecimentos adquiridos com o desenvolvimento deste projeto somam funcionalidade e prática aos conceitos científicos e técnicos dos estudos de Ciência da Computação.
+Com o surgimento e a viabilização econômica de sistemas e projetos embarcados, o ensino da computação se popularizou no meio educacional, fazendo o número de pesquisadores e usuários crescer rapidamente. Por isso a área de miniaturização de computadores e adoção dos sistemas embarcados vem colocando-se no meio profissional de maneira gradativa. O presente trabalho trata dos conceitos de Processamento Digital de Imagens aplicados ao Raspberry Pi, módulo de computação embarcada, e sua câmera. Utilizando técnicas de segmentação no vídeo adquirido, foi desenvolvido um método de segmentação de pessoas em tempo real.  Este projeto pode ser aplicado em sistemas de vigilância, segurança e rastreamento. Os conhecimentos adquiridos com o desenvolvimento deste projeto somam funcionalidade e prática aos conceitos científicos e técnicos dos estudos de Ciência da Computação.
 
 \palavraschave{Sistemas Embarcados, Raspberry Pi, Processamento Digital de Imagens, Segmentação de Pessoas, Vídeo}    
 \end{resumo}
@@ -96,14 +96,20 @@ Com o surgimento e a viabilização econômica de sistemas e projetos embarcados
 Diversos projetos de software embarcado têm surgido nos últimos anos, motivados principalmente pela evolução dos chips, processadores e aumento da capa-cidade computacional. Em 1965, Gordon Moore\footnote{\url{ http://www.monolithic3d.com/uploads/6/0/5/5/6055488/gordon_moore_1965_article.pdf	
 }}  já havia feito a previsão de que cada vez mais haveriam componentes menores e com maior processamento.
 Dois componentes populares são o Arduino e Raspberry Pi.  Essas placas, do tamanho de cartões de crédito, possuem o mesmo poder computacional de estações de trabalho convencionais, além de um custo muito menor.   O estudo de Processamento Digital de Imagens (PDI) tem sido empregado em campos da área industrial, saúde, segurança e robótica. Esse último, mais recentemente tem ganhado maior vínculo com a área de PDI, pois tem buscado a automação e a execução de tarefas mais complexas com o auxílio de sensores.
-O objetivo central deste trabalho é o desenvolvimento de uma aplicação embarcada para a plataforma Raspberry Pi, tendo como funcionalidades:  
 
-\begin{lista}
+O objetivo central deste trabalho é o desenvolvimento de uma aplicação embarcada para a plataforma \textit(Raspberry Pi}, tendo como funcionalidades:  
+
+\begin{enumerate}
     \item Processamento em tempo real dos quadros do vídeo capturado a partir do módulo de câmera;
     \item Realização das etapas de segmentação de pessoas dos quadros do vídeo.
-\end{lista}
+\end{enumerate}
 
-Este trabalho está dividido como segue. O Capítulo 2 apresenta a funda-mentação teórica abordando os conceitos de PDI, processamento embarcado no Raspberry Pi e o problema de segmentação de pessoas em vídeo. O Capítulo 3 apresenta os trabalhos relacionados com o tema proposto neste trabalho, seguido da metodologia de desenvolvimento do sistema proposto no Capítulo 4.
+Este trabalho está dividido em:
+\begin{lista}
+    \item O Capítulo 2 apresenta a funda-mentação teórica abordando os conceitos de PDI, processamento embarcado no Raspberry Pi e o problema de segmentação de pessoas em vídeo.
+    \item O Capítulo 3 apresenta os trabalhos relacionados com o tema proposto neste trabalho.
+    \item Seguido da metodologia de desenvolvimento do sistema proposto no Capítulo 4.
+\end{lista}
 
 
 % -----------------------------------------------------------------------
@@ -116,23 +122,22 @@ Este capítulo apresenta os fundamentos necessários para a implementação dest
 
 \section{PROCESSAMENTO DIGITAL DE IMAGENS}
 
-O conceito de processamento de imagens refere-se ao conjunto de métodos utilizados em imagens adquiridas que devem ser corrigidas e melhor definidas, isso para que a interpretação visual se torne mais nítida e pontos perdidos na aquisição e também na transmissão possam ser restaurados com a finalidade de se obter a qualidade mais próxima possível da vida real.
+O conceito de processamento de imagens refere-se ao conjunto de métodos utilizados em imagens adquiridas, que devem ser corrigidas e melhor definidas, isso para que a interpretação visual se torne mais nítida e pontos perdidos na aquisição, e também na transmissão, possam ser restaurados com a finalidade de se obter a qualidade mais próxima possível da vida real.
 
 \subsection{Fundamentos das Imagens Digitais}
 
-Uma imagem pode ser definida como uma função de intensidade de luz sobre determinado ponto, tratada comumente de maneira bidimensional. (GONZALEZ, e WOODS, 2006, p.4). Explorando de maneira mais minuciosa a definição de ima-gem, tem-se que para a obtenção de uma imagem, em um plano de coordenadas espaciais, dado por (x, y) deve-se estabelecer um ponto de observação, também denominado ponto focal, como conforme mostra a \autoref{fig:aquisicao_sensor_felgueiras}, medir os graus de incidência e reflexão da luz gerada e presente no plano observável em consideração ao ponto de observação e sua redondeza, denominada cena.
+Uma imagem pode ser definida como uma função de intensidade de luz sobre determinado ponto, tratada comumente de maneira bidimensional. (GONZALEZ, e WOODS, 2006, p.4). Explorando de maneira minuciosa a definição de imagem, tem-se que para a obtenção de uma imagem, em um plano de coordenadas espaciais, dado por $(x, y)$ deve-se estabelecer um ponto de observação, também denominado ponto focal, como conforme mostra a \autoref{fig:aquisicao_sensor_felgueiras}, medir os graus de incidência e reflexão da luz gerada e presente no plano observável em consideração ao ponto de observação e sua redondeza, denominada cena.
 
-\newline A incidência, ou iluminação de pontos na cena é obtida partindo da fonte de luz para os elementos presentes no plano. A resultante varia de acordo com a exposição e a luminosidade do instante no qual a imagem é capturada. Já a reflexão, ou refletância do ponto de observação, corresponde ao grau de absorção que determinado objeto tem da quantidade de luz emitida no ambiente. Tipicamente, o valor é definido através de um intervalo entre 0 e 1, onde 1 é a reflexão total do comprimento de onda referente à luz incidida sobre o objeto.
+A incidência ou iluminação de pontos na cena é obtida partindo da fonte de luz para os elementos presentes no plano. A resultante varia de acordo com a exposição e a luminosidade do instante no qual a imagem é capturada. Já a reflexão, ou refletância do ponto de observação, corresponde ao grau de absorção que determinado objeto tem da quantidade de luz emitida no ambiente. Tipicamente, o valor é definido através de um intervalo entre 0 e 1, onde 1 é a reflexão total do comprimento de onda referente à luz incidida sobre o objeto.
 
 
 \begin{figure}[htb]
-    \legenda[fig:aquisicao_sensor_felgueiras]{Aquisição por Sensor}
+    \legenda[fig:aquisicao_sensor_felgueiras]{Aquisição por sensor}
     \fig{scale=0.5}{img/aquisicao_sensor_felgueiras}
     \fonte{\citeonline[p. 24]{felgueiras2008}}
 \end{figure}
 
-Em resumo, uma imagem é o conjunto de pontos convergentes que constrói um todo. Para o estudo e processamento, imagem é o conjunto de informações coletadas para a representação mais nítida de um ponto de observação.
-Os pontos focais, no mundo real, são definidos como tridimensionais, por serem traduzidos em três coordenadas, x, y e z, respectivamente, altura, largura e profundidade. Quando há captura através de um sistema, seja com câmeras ou sensores, e transcrição para uma imagem, existe também perda da informação espacial, correspondente à coordenada z. Logo, a profundidade da cena na qual o objeto, ponto focal, está é omitida (\cite{pdi2006}).
+Em resumo, uma imagem é o conjunto de pontos convergentes que constrói um todo. Para o estudo e processamento, imagem é o conjunto de informações coletadas para a representação mais nítida de um ponto de observação. Os pontos focais, no mundo real, são definidos como tridimensionais, por serem traduzidos em três coordenadas, $x, y, z$, respectivamente altura, largura e profundidade. Quando há captura através de um sistema, seja com câmeras ou sensores, e transcrição para uma imagem, existe também perda da informação espacial, correspondente à coordenada $z$. Logo, a profundidade da cena na qual o objeto, ponto focal, está é omitida (\cite{pdi2006}).
 
 \subsection{Imagens Bidimensionais}
 
@@ -144,11 +149,11 @@ $f(x,y)$ = \begin{matriz}\label{m2}
 
 \begin{figure}[htb]
     \legenda[fig:representacao_matriz_felgueiras]{Representação matricial de uma imagem}
-    \fig{scale=0.5}{img/representacao_matriz_felgueiras}
+    \fig{scale=0.75}{img/representacao_matriz_felgueiras}
     \fonte{\citeonline[p. 41]{felgueiras2008}}
 \end{figure}
 
-A cor ou intensidade de uma imagem é obtida através do valor de cada tupla existente na matriz, em escala de cinza (medida que varia de 0 a 255), como apresentado na \autoref{fig:digitalizacao_imagem_felgueiras}. Para a aquisição de uma imagem bidimensional, é necessário um equipamento capaz de identificar níveis de onda eletromagnética (raio-X, infravermelho, ultravioleta, entre outros) e produzir um sinal elétrico correspondente, para que um segundo equipamento possa transcrever o sinal físico para o meio digital.
+A cor ou intensidade de uma imagem é obtida através do valor de cada tupla existente na matriz em escala de cinza (medida que varia de 0 a 255), como apresentado na \autoref{fig:digitalizacao_imagem_felgueiras}. Para a aquisição de uma imagem bidimensional é necessário um equipamento capaz de identificar níveis de onda eletromagnética (raio-X, infravermelho, ultravioleta, entre outros) e produzir um sinal elétrico correspondente para que um segundo equipamento possa transcrever o sinal físico para o meio digital.
 
 \begin{figure}[htb]
     \legenda[fig:digitalizacao_imagem_felgueiras]{Digitalização de uma imagem}
@@ -156,17 +161,17 @@ A cor ou intensidade de uma imagem é obtida através do valor de cada tupla exi
     \fonte{\citeonline[p. 39]{felgueiras2008}}
 \end{figure}
 
-Os sinais identificados e transcritos passam pela aplicação de modelos e técnicas de processamento para eliminar ou sobrepor o eixo Z, eixo da profundidade. Chamada de transformação de perspectiva, ou imageamento, essa é uma técnica que busca a aproximação da imagem identificada tridimensionalmente pelo olho.
+Os sinais identificados e transcritos passam pela aplicação de modelos e técnicas de processamento para eliminar ou sobrepor o eixo $z$, eixo da profundidade. Chamada de transformação de perspectiva, ou imageamento, essa é uma técnica que busca a aproximação da imagem identificada tridimensionalmente pelo olho.
 Após a transcrição do sinal recebido, é necessário armazenar a matriz para que, posteriormente, aplique-se à mesma o processamento.
 
-\newline Esse armazenamento pode ocorrer por curto prazo, no qual as ondas são armazenadas em buffers para que, dependendo do dispositivo, possa ocorrer nele próprio, por exemplo, um processamento inicial, sendo apenas a tradução para pixels ou até montagem de uma imagem digital. Outro tipo de armazenamento típico é o massivo, onde os dados coletados são retidos para que, posteriormente, sejam analisados por programas para construir as imagens. (\citeonline{pdi2006})
+\newline Esse armazenamento pode ocorrer por curto prazo, no qual as ondas são armazenadas em buffers para que, dependendo do dispositivo, possa ocorrer nele próprio, por exemplo, um processamento inicial, sendo apenas a tradução para pixels ou até a montagem de uma imagem digital. Outro tipo de armazenamento típico é o massivo, onde os dados coletados são retidos para que, posteriormente, sejam analisados por programas para construir as imagens (\citeonline{pdi2006}).
 
 \subsection{Vídeo}
-Vídeo digital é o resultado de uma sequência de quadros de imagens digitais \textit{(frames)}, representando uma determinada cena. A taxa de atualização de cada frame se dá pela razão de quadros de imagens digitais por tempo contínuo, contado em segundos e sua exibição é dada progressivamente.
-O armazenamento de vídeos leva em consideração a qualidade e o tamanho. Para isso, vários \textit{codecs}, formatos foram criados e são utilizados conforme a necessidade de recuperação das informações do vídeo e o suporte do hardware onde será reproduzido. (\cite[p. 6]{de2013arquitetura}).
+Vídeo digital é o resultado de uma sequência de quadros de imagens digitais \textit{(frames)}, representando uma determinada cena. A taxa de atualização de cada frame se dá pela razão de quadros de imagens digitais por tempo contínuo, contado em segundos, e sua exibição é dada progressivamente.
+O armazenamento de vídeos leva em consideração a qualidade e o tamanho. Para isso, vários \textit{codecs} (formatos) foram criados e são utilizados conforme a necessidade de recuperação das informações do vídeo e o suporte do hardware onde será reproduzido \cite[p. 6]{de2013arquitetura}.
 
-\subsection{Passos fundamentais do PDI}
-Nesta subseção são apresentados e definidos os passos fundamentais do Processamento Digital de Imagens (PDI), exemplificados na \autoref{fig:passos_pdi_gonzalez}.
+\subsection{Passos Fundamentais do PDI}
+Nesta seção são apresentados e definidos os passos fundamentais do Processamento Digital de Imagens (PDI), mostados na \autoref{fig:passos_pdi_gonzalez}.
 
 \begin{figure}[htb]
     \legenda[fig:passos_pdi_gonzalez]{Passos fundamentais do Processamento Digital de Imagens}
@@ -178,9 +183,9 @@ Nesta subseção são apresentados e definidos os passos fundamentais do Process
 
 A primeira etapa do PDI é definida por traduzir os aspectos visíveis do mundo real por meio de sensores capazes capturar uma banda eletromagnética e traduzir em sinais elétricos perceptíveis, bem como converter tais sinais em elementos digitais. Como exemplos de sensores, tem-se satélites, aparelhos de ressonância magnética e câmeras fotográficas (\citeonline[p.7 – 10]{pdi2006}).
 
-\subsection{Pré-processamento}
+\subsection{Pré-Pocessamento}
 
-A etapa de pré-processamento é responsável pela melhoria da imagem para aumento de qualidade, de modo algorítmico, para os processos seguintes. O pré-processamento consiste na aplicação das técnicas de melhoria de contraste, realce de características, correção de defeitos de captura, como por exemplo ruídos e foco (\citeonline[p.6]{pdi2006}).
+A etapa de pré-processamento é responsável pela melhoria da imagem para aumento de qualidade, de modo algorítmico, para os processos seguintes. O pré-processamento consiste na aplicação das técnicas de melhoria de contraste, realce de características e correção de defeitos de captura, como por exemplo ruídos e foco (\citeonline[p.6]{pdi2006}).
 
 \subsection{Segmentação}
 
@@ -199,13 +204,13 @@ Conforme \citeonline[p.6]{pdi2006}, a representação é a etapa de definição 
 
 A etapa de reconhecimento e interpretação, segundo \citeonline[p.7 – 10]{pdi2006}, é a rotulação baseada na descrição de cada objeto presente na imagem e a atribuição de um significado, conforme a base de conhecimento, aos resultados adquiridos.
 
-\subsection{Base de conhecimento}
-Dado como o objeto ou o conjunto de imagens a ser estudado pelo Processamento Digital de Imagens, a base de conhecimento é responsável por guiar cada etapa e definir a interação entre as mesmas \citeonline[p.6]{pdi2006}. Para que os objetos de processamento sejam acessados, o armazenamento é em três categorias:
-\begin{lista}
-    \item De curto tempo: Armazenamento da imagem enquanto processada, em memória computacional (\textit{frame buffers}), onde a velocidade de acesso é alta, isto é, cerca de 30 imagens por segundo;
-    \item Em massa ou \textit{on-line}: Armazenamento em unidades com capacidade para, no mínimo, algumas centenas de imagens contabilizadas em MB. Para que as informações estejam disponíveis e possam ser acessadas de maneira rápida, essas são comprimidas juntamente com suas informações (tamanho, número de cores, entre outros) em diferentes formatos;
-    \item Arquivamento: Armazenamento em massa sem a necessidade corrente de acesso, onde agrupamentos de imagens são estocadas.
-\end{lista}
+\subsection{Base de Conhecimento}
+Dado como o objeto ou o conjunto de imagens a ser estudado pelo Processamento Digital de Imagens, a base de conhecimento é responsável por guiar cada etapa e definir a interação entre as mesmas \citeonline[p.6]{pdi2006}. Para que os objetos de processamento sejam acessados, o armazenamento é realizado em três categorias:
+\begin{enumerate}
+    \item De curto tempo: Armazenamento da imagem enquanto processada, em memória computacional (\textit{frame buffers}), onde a velocidade de acesso é alta, isto é, cerca de 30 imagens por segundo.
+    \item Em massa ou \textit{on-line}: Armazenamento em unidades com capacidade para, no mínimo, algumas centenas de imagens contabilizadas em MB. Para que as informações estejam disponíveis e possam ser acessadas de maneira rápida, essas são comprimidas juntamente com suas informações (tamanho, número de cores, entre outras) em diferentes formatos.
+    \item Arquivamento: Armazenamento em massa sem a necessidade corrente de acesso, onde agrupamentos de imagens são estocados.
+\end{enumerate}
 
 \section{Técnicas de Processamento de Imagens}
 \subsection{Limiarização}
@@ -223,7 +228,7 @@ Filtro onde o pixel central da máscara é substituído pela mediana, número qu
 \subsection{Histograma}
 Gráfico de frequência relativa da ocorrência dos valores possíveis de cada pixel. Ou seja, a contagem de ocorrência de cada valor em escala de cinza em uma imagem. (\citeonline[p. 58, 59]{solomon2000fundamentos})
 
-\subsection{Subtração de imagens}
+\subsection{Subtração de Imagens}
 Primeiramente utilizada para ajustes em contraste de uma imagem, a subtração também pode ser aplicada a diferentes imagens (quadros, quando denotada cena) onde a resultante será a mudança ou movimentação dentro da cena. (\citeonline[p. 47]{solomon2000fundamentos})
 
 \subsection{Regiões}
@@ -232,7 +237,7 @@ Método de separação de pixels em regiões baseado em grau de similaridade.
 \subsection{Similaridade}
 Agrupamento de pixels adjacentes em classes que satisfazem critérios como: diferença absoluta de intensidade entre pixels e seu valor médio em uma região, desvio-padrão entre as vizinhanças (\citeonline[p. 239, 240]{solomon2000fundamentos}).
 
-\subsection{Detecção de bordas}
+\subsection{Detecção de Bordas}
 Processo de determinação de fronteiras, contornos de uma região de interes-se, onde há a transição de intensidade entre os pixels. Tal processo é realizado aplicando-se filtros de diferenciação de gradiente, como Prewitt, Canny e Sobel, filtros laplaciano e gaussiano. (\citeonline[p. 242]{solomon2000fundamentos})
 
 \subsection{Canny}
@@ -256,7 +261,7 @@ A exemplo de um \textit{Single-Board-Computer}, temos: BeagleBone, Raspberry Pi,
 O \textit{Raspberry Pi} Pi é um computador com dimensões de um cartão de crédito (85.60 mm × 56.5 mm), com 45g, anunciado em 2011 (\autoref{fig:raspberry_autor}) sendo seu primeiro modelo lançado em fevereiro de 2012. Com a finalidade de ser o computador mais barato em circulação, estimular e expandir o ensino de computação e programação, foi idealizado por Pete Lomas no Reino Unido tendo seu valor em torno de 35 dólares e código aberto.
 
 \begin{figure}[htb]
-    \legenda[fig:raspberry_autor]{Raspberry Pi - modelo B(v.2011.12)}
+    \legenda[fig:raspberry_autor]{Raspberry Pi - modelo B (v.2011.12)}
     \fig{scale=1.0}{img/raspberry_autor}
     \fonte{O próprio autor, 2017}
 \end{figure}
@@ -266,11 +271,11 @@ Tal arquitetura possibilita a criação de técnicas de micro-arquitetura tendo 
 Seu armazenamento se dá através de cartões de memória SD (modelo A/B), MicroSDHC (modelo B) e MMC (modelo Zero) com capacidade a ser definida pelo utilizador, onde serão instalados o sistema operacional e demais aplicações.
 Os sistemas operacionais adotados para a Raspberry Pi variam conforme a sua finalidade. Em sua grande maioria, são sistemas baseados em \textit{Linux} e otimizados para o \textit{Raspberry} como o popular \textit{Raspbian} e o \textit{PiDora}. Recentemente, com o avanço da Internet das Coisas (\textit{IoT}), foi possível incluir o \textit{Windows} 10 como sistema operacional base
 
-\subsection{Raspberry Pi Câmera}
+\subsection{Cãmera Raspberry Pi}
 Módulo adicional ao \textit{Raspberry}, a \textit{Raspberry Pi Câmera} \autoref{fig:modulo_camera_autor}) é ligada ao socket CSI (\textit{Camera Serial Interface}), interface projetada especificamente para a conexão com a câmera. O primeiro modelo vem com um sensor \textit{OmniVision} OV5647 de 5 \textit{Mega Pixels} para imagens e suporte a vídeos em 1080p 30fps, 720p 60fps e VGA90. O segundo modelo, v2, traz um sensor Sony IMX219 de 8 \textit{Mega Pixels}, com maior desempenho em baixa-luminosidade e fidelidade a cores. A conexão com a porta CSI se dá através de um cabo do tipo \textit{ribbon} invertido, com 15 vias.
 
 \begin{figure}[htb]
-    \legenda[fig:modulo_camera_autor]{Módulo de Câmera Raspberry Pi}
+    \legenda[fig:modulo_camera_autor]{Módulo da câmera Raspberry Pi}
     \fig{scale=0.075}{img/modulo_camera_autor}
     \fonte{O próprio autor, 2017}
 \end{figure}
@@ -286,23 +291,23 @@ Este capítulo apresenta uma revisão dos trabalhos relacionados a detecção de
 Shilpashree \textit{et al.} (2015) apresentam o processamento de imagens através do computador \textit{Raspberry Pi}, com seus componentes, como, por exemplo, a câmera \textit{Pi}. Os autores apresentam a implementação de metodologias e algoritmos com seu fluxo de ação para a captação de imagens sem ruídos. O conceito de processamento de imagens é explanado de maneira sucinta, como a captura por câmera, processamento através de um sistema e amostragem da imagem processada, conforme fluxos representados nas Figuras 7 e 8.
 
 \begin{figure}[htb]
-    \legenda[fig:fluxo_shilpashree]{Fluxo de execução proposto}
+    \legenda[fig:fluxo_shilpashree]{Fluxo de execução proposto para processamento}
   \fig{scale=0.5}{img/fluxo_shilpashree}
     \fonte{\citeonline{shilpashree2015implementation}}
 \end{figure}
 
 \begin{figure}[htb]
-    \legenda[fig:fluxo_simples_shilpashree]{Visão geral}
+    \legenda[fig:fluxo_simples_shilpashree]{Visão geral do fluxo}
   \fig{scale=0.75}{img/fluxo_simples_shilpashree}
     \fonte{\citeonline{shilpashree2015implementation}}
 \end{figure}
 
 O artigo apresenta o dispositivo \textit{Raspberry Pi}, uma placa com \textit{chip Broadcom} 700MHz, com CPU ARM 32 \textit{bits}, rodando um sistema operacional \textit{Linux} a partir de um cartão SD. Os autores utilizaram um módulo de câmera de 15 pinos, com resolução de 5MP, o que traz como resultado uma imagem de até 1920 x 1080 pixels e um vídeo com captura de aproximadamente 30 quadros por segundo. O módulo utiliza conectores \textit{Camera Serial Interface} (CSI) para serem inseridos diretamente na interface desenvolvida para câmeras do dispositivo, sendo sua lente capaz de entregar um vídeo de alta qualidade.
 
-\newline A metodologia aplicada traz a instalação do sistema operacional a ser utiliza-do na placa, bem como a inserção do módulo de câmera. Os algoritmos foram desenvolvidos usando a linguagem de programação \textit{Python}. O algoritmo utilizado para demonstrar o processamento de imagem realizado na placa \textit{Raspberry Pi} é \textit{Rudin-Osher-Fatemi (ROF)}. Esse algoritmo aplica uma suavização na imagem, retirando os ruídos da imagem captada, minimizando as diferenças para a imagem desejada e preservando as bordas e estruturas reais. Como resultado da aplicação, o algoritmo apresentou imagens mais nítidas, tendo sido executado com sucesso no dispositivo (Figura 9).
+A metodologia aplicada traz a instalação do sistema operacional a ser utilizado na placa, bem como a inserção do módulo de câmera. Os algoritmos foram desenvolvidos usando a linguagem de programação \textit{Python}. O algoritmo utilizado para demonstrar o processamento de imagem realizado na placa \textit{Raspberry Pi} é \textit{Rudin-Osher-Fatemi (ROF)}. Esse algoritmo aplica uma suavização na imagem, retirando os ruídos da imagem captada, minimizando as diferenças para a imagem desejada e preservando as bordas e estruturas reais. Como resultado da aplicação, o algoritmo apresentou imagens mais nítidas, tendo sido executado com sucesso no dispositivo (Figura 9).
 
 \begin{figure}[htb]
-    \legenda[fig:suavizacao_shilpashree]{Suavização com RUF}
+    \legenda[fig:suavizacao_shilpashree]{Suavização com ROF}
   \fig{scale=0.75}{img/suavizacao_shilpashree}
     \fonte{\citeonline{shilpashree2015implementation}}
 \end{figure}
@@ -317,8 +322,8 @@ Gaier \textit{et al.} (2013) apresentam o processamento de imagens por meio da b
     \fonte{\citeonline{gaier2013}}
 \end{figure}
 
-Para a identificação foi utilizada a biblioteca OpenCV que tem como seus diferenciais ser multiplataforma e focada em ambientes móveis, por ser rápida. O controle de movimentos e resposta do robô ao ambiente foram configurados dentro do Arduino Uno, plataforma específica para elaboração de projetos eletrônicos, com maior popularidade na robótica, onde sua configuração e instalação é fácil e prática, além de as respostas serem ágeis, pela maneira que é instalada, diretamente nos circuitos do robô.
-As técnicas utilizadas para a identificação de padrões incluem a detecção de bordas por meio do algoritmo de \textit{Canny}, que estabelece como premissas a não-perda de nenhuma borda presente na imagem, a maior precisão nas bordas com relação ao mundo real e a completa eliminação de ruído, para que uma borda seja estabelecida apenas uma vez; e também o \textit{Speeded Up Robust Features} (SURF), técnica que traduz a imagem a um conjunto de coordenadas cartesianas para que seja criado um padrão de escala (Figura 11), a ser aplicado em outro cenário onde deverá ser marcado e exibido um objeto correspondente. Ambas as técnicas aplicam transformações gaussianas e escalas de cinza para obter maior precisão sem perda de informação.
+Para a identificação foi utilizada a biblioteca OpenCV, que tem como seus diferenciais ser multiplataforma e focada em ambientes móveis, por ser rápida. O controle de movimentos e resposta do robô ao ambiente foram configurados dentro do Arduino Uno, plataforma específica para elaboração de projetos eletrônicos, com maior popularidade na robótica, onde sua configuração e instalação é fácil e prática, além das respostas serem ágeis, pela maneira como é instalada, diretamente nos circuitos do robô.
+As técnicas utilizadas para a identificação de padrões incluem a detecção de bordas por meio do algoritmo de \textit{Canny}, que estabelece como premissas a não perda de nenhuma borda presente na imagem, a maior precisão nas bordas com relação ao mundo real e a completa eliminação de ruído, para que uma borda seja estabelecida apenas uma vez; e também o \textit{Speeded Up Robust Features} (SURF), técnica que traduz a imagem a um conjunto de coordenadas cartesianas para que seja criado um padrão de escala (Figura 11), a ser aplicado em outro cenário onde deverá ser marcado e exibido um objeto correspondente. Ambas as técnicas aplicam transformações gaussianas e escalas de cinza para obter maior precisão sem perda de informação.
 
 \begin{figure}[htb]
     \legenda[fig:aplicacao_tecnica_gaier]{Exemplo da aplicação da técnica SURF}
@@ -326,7 +331,7 @@ As técnicas utilizadas para a identificação de padrões incluem a detecção 
     \fonte{\citeonline{gaier2013}}
 \end{figure}
 
-A implementação foi testada no robô montado, passando por cada ponto de tratamento e passo dos algoritmos. Com o robô treinado a partir de uma imagem (Figura 12), obteve-se êxito na busca pelo contorno dentro de um ambiente com certo atraso na visualização das respostas, porém não afetando no seu resultado e com comunicação estável entre as diferentes plataformas.
+A implementação foi testada no robô montado, passando por cada ponto de tratamento e passo dos algoritmos. Com o robô treinado a partir de uma imagem (Figura 12), obteve-se êxito na busca pelo contorno dentro de um ambiente com certo atraso na visualização das respostas, porém não afetando no seu resultado, e com comunicação estável entre as diferentes plataformas.
 
 \begin{figure}[htb]
     \legenda[fig:treino_identificacao_gaier]{Treino para identificação de padrões}
@@ -358,10 +363,10 @@ O artigo propõe resolver o problema de segmentação de vídeo não normalizada
     \fonte{\citeonline{li2013video}}
 \end{figure}
 
-Para cada quadro utilizar um algoritmo de separação por múltiplas imagens e estabelecer a configuração de aparência. Logo após a diferenciação dos quadros, aplicar simultaneamente a aprendizagem dos modelos para todos os quadros da imagem, uma abordagem gulosa para os conseguintes quadros, repetindo o algoritmo. Neste artigo foi demonstrado que a múltipla secção para segmentação é possível e sua adoção melhora a interpretação de sequências de vídeos.
+Para cada quadro foi utilizado um algoritmo de separação por múltiplas imagens e estabelecida a configuração de aparência. Logo após a diferenciação dos quadros, foi aplicada simultaneamente a aprendizagem dos modelos para todos os quadros da imagem, uma abordagem gulosa para os conseguintes quadros, repetindo o algoritmo. Neste artigo foi demonstrado que a múltipla secção para segmentação é possível e sua adoção melhora a interpretação de sequências de vídeos.
 
 \section{detection and location of people in video images using adaptive fusion of color and edge information}
-Jabri \textit{et al.} (2000) apresentam um método de extração e segmentação de pes-soas baseado na coloração predominante e na área de borda, focando na área mais recentemente modificada. Tendo como premissa que a parte a ser segmentada será uma pessoa e que, em um vídeo, ela será a parte mais recente a ser inserida na imagem (Figura 15), o método analisa o contorno e as bordas das regiões de acordo com a frequência e canais de cores definidas na imagem.
+Jabri \textit{et al.} (2000) apresentam um método de extração e segmentação de pessoas baseado na coloração predominante e na área de borda, focando na área mais recentemente modificada. Tendo como premissa que a parte a ser segmentada será uma pessoa e que, em um vídeo, ela será a parte mais recente a ser inserida na imagem (Figura 15), o método analisa o contorno e as bordas das regiões de acordo com a frequência e canais de cores definidas na imagem.
 
 \begin{figure}[htb]
     \legenda[fig:imagem_inicial_jabri]{Imagem em que a segmentação será aplicada}
@@ -370,11 +375,11 @@ Jabri \textit{et al.} (2000) apresentam um método de extração e segmentação
 \end{figure}
 
 O método é dividido em três partes para segmentar a região onde estará a pessoa a ser identificada:
-\begin{lista}
-    \item Separar e manter o fundo da imagem;
-    \item Subtrair da imagem original o fundo;
+\begin{enumerate}
+    \item Separar e manter o fundo da imagem.
+    \item Subtrair da imagem original o fundo.
     \item Selecionar a parte frontal da imagem.
-\end{lista}
+\end{enumerate}
 
 A separação é realizada através da medida de peso de cada pixel em duas imagens subsequentes, onde cada vez mais ao fundo, mais leve e estático o pixel será. A resultante do método é apresentada na Figura 16.
 
@@ -412,9 +417,11 @@ A abordagem segue o seguinte fluxo:
     \item Segmentação por \textit{k-means};
     \item Rastreamento;
     \item Validação;
-    \item Detecção e contagem.
+    \item Detecção;
+    \item Contagem.
 \end{lista}
-Utilizando a técnica \textit{k-means} após a diferença entre os canais da imagem e definição do que faz parte do fundo do vídeo, é estimado o número de centróides, que corresponderam ao número de pessoas na cena, bem como a área de cada centroide, correspondendo ao tamanho médio de uma pessoa, ilustrado na Figura 19.
+
+Utilizando a técnica \textit{k-means} após a diferença entre os canais da imagem e definição do que faz parte do fundo do vídeo, é estimado o número de centróides, que correspondem ao número de pessoas na cena, bem como a área de cada centroide, correspondendo ao tamanho médio de uma pessoa, ilustrado na Figura 19.
 
 \begin{figure}[htb]
     \legenda[fig:kmeans_almeida]{Resultado da diferença entre o vídeo original e a separação da cena}
@@ -422,8 +429,8 @@ Utilizando a técnica \textit{k-means} após a diferença entre os canais da ima
     \fonte{\citeonline{deimplementaccao}}
 \end{figure}
 
-Após a definição de cada \textit{cluster} (centróide), correspondente a uma pessoa, o algoritmo proposto calcula a menor distância Euclidiana entre centroides pela diferença de \textit{frames} consecutivos, marcando-os como a mesma pessoa.
-A relação de \textit{cluster} por \textit{frame} é armazenada dentro de uma matriz, onde a posição \textit{t} corresponderá a 1, caso o mesmo \textit{cluster} estiver no correspondente \textit{frame t+1}. A contagem de pessoas, passo final do algoritmo, se dá através da análise da matriz resultante onde, caso exista a alteração dos valores de 0 para 1, um contador é somado.
+Após a definição de cada \textit{cluster} (centróide), correspondente a uma pessoa, o algoritmo proposto calcula a menor distância Euclidiana entre os centróides pela diferença de \textit{frames} consecutivos, marcando-os como a mesma pessoa.
+A relação de \textit{cluster} por \textit{frame} é armazenada dentro de uma matriz, onde a posição \textit{t} corresponderá a 1, caso o mesmo \textit{cluster} estiver no correspondente \textit{frame} $t+1$. A contagem de pessoas, passo final do algoritmo, se dá através da análise da matriz resultante onde, caso exista a alteração dos valores de 0 para 1, um contador é somado.
 Como experimento, o algoritmo foi treinado em dois ambientes, um instável e um controlado, com a mesma duração e o mesmo número máximo de pessoas. Observou-se que a distância da câmera ao chão afeta consideravelmente a distância entre os \textit{clusters}, prejudicando a contagem. Sendo assim, foi necessária a utilização de métodos de correção: precisão e \textit{recall}. A precisão é dada pela razão entre o ponto verdadeiro positivo e a soma verdadeiro positivo e falso positivo. O \textit{recall} é dado pela razão entre o ponto verdadeiro positivo e a soma verdadeiro positivo e falso negativo. O F-Score, relação média ponderada entre precisão e \textit{recall}, resulta em um valor mais real da diferença entre os clusters.
 De acordo com o Quadro 1, foi visto que, com o melhor ajuste de parâmetros e filtro eliminando ruídos, os resultados seriam mais precisos.
 
@@ -433,11 +440,11 @@ De acordo com o Quadro 1, foi visto que, com o melhor ajuste de parâmetros e fi
         \hline
         \textbf{} & \textbf{Método Original}\\ 
         \hline\hline
-        pessoas & 20\\ \hline
+        Pessoas & 20\\ \hline
         TP  & 20\\ \hline
         FP+FN    & 0+1\\ \hline
-        precisão  & 1.00\\ \hline
-        \textit{recall}  & 0.95\\ \hline
+        Precisão  & 1.00\\ \hline
+        \textit{Recall}  & 0.95\\ \hline
         F-score & 0.97\\ \hline
         Questão & Alternativa\\ \hline
     \end{tabular}
@@ -446,12 +453,12 @@ De acordo com o Quadro 1, foi visto que, com o melhor ajuste de parâmetros e fi
 \end{quadro}
 
 \section{avaliação da amostragem temporal na detecção e no rastreamento de pessoas em vídeos de fundo dinâmico}
-Siqueira (2015) apresenta uma minimização no número de quadros \textit{(frames)} a serem analisados para a detecção e rastreamento de pessoas em vídeo. Utilizando como método principal para a segmentação, o autor baseou-se no classificador \textit{Adaboost}, esquematizado na Figura 20. O classificador consiste na combinação linear de características identificadas por meio do método \textit{Mean Shift}, que define um objeto segundo suas medidas ou cor e delimitando-as segundo o Filtro de \textit{Kalman.}
+Siqueira e Machado (2015) apresentam uma minimização no número de quadros \textit{(frames)} a serem analisados para a detecção e rastreamento de pessoas em vídeo. Utilizando como método principal para a segmentação, o autor baseou-se no classificador \textit{Adaboost}, esquematizado na Figura 20. O classificador consiste na combinação linear de características identificadas por meio do método \textit{Mean Shift}, que define um objeto segundo suas medidas ou cor e delimitando-as segundo o Filtro de \textit{Kalman.}
 Seguindo a classificação, é aplicada uma função do tipo \textit{Haar} (Figura 21), definida pela transformada de \textit{Haar}, que consiste na subtração da média dos valores da região mais escura pelos valores da região mais clara da imagem. A classificação dita forte se dá pela taxa de acerto nos quadros selecionados, ou seja, onde existe o objeto a ser rastreado.
 
 \begin{figure}[htb]
     \legenda[fig:classificador_adaboost_siqueira]{Esquematização do classificador Adaboost}
-  \fig{scale=1.25}{img/classificador_adaboost_siqueira}
+  \fig{scale=0.75}{img/classificador_adaboost_siqueira}
     \fonte{\citeonline{siqueiraavaliaccao}}
 \end{figure}
 
@@ -461,7 +468,7 @@ Seguindo a classificação, é aplicada uma função do tipo \textit{Haar} (Figu
     \fonte{\citeonline{siqueiraavaliaccao}}
 \end{figure}
 
-Seguindo a estratégia de diminuição de quadros, o autor utilizou-se de um sensor de captura de 16 frames por segundo. Após a aplicação dos métodos descritos, percebe-se, conforme mostra a Figura 22, que a detecção não se baseia diretamente na quantidade de elementos analisados, mas sim nas características definidas para o objeto a ser detectado ou rastreado, podendo assim diminuir a quantida-de de quadros coletados para análise.
+Seguindo a estratégia de diminuição de quadros, o autor utilizou-se de um sensor de captura de 16 frames por segundo. Após a aplicação dos métodos descritos, percebe-se, conforme mostra a Figura 22, que a detecção não se baseia diretamente na quantidade de elementos analisados, mas sim nas características definidas para o objeto a ser detectado ou rastreado, podendo assim diminuir a quantidade de quadros coletados para análise.
 
 \begin{figure}[htb]
     \legenda[fig:resultado_siqueira]{Resultado da aplicação dos métodos Adaboost e Haar}
@@ -472,18 +479,18 @@ Seguindo a estratégia de diminuição de quadros, o autor utilizou-se de um sen
 O Quadro 2 apresenta um comparativo entre os trabalhos apresentados e suas abordagens.
 
 \begin{quadro}[htb]
-    \legenda[quadro:comparativo_trabalhos]{Comparativo dos trabalhos apresentados}
+    \legenda[quadro:comparativo_trabalhos]{Comparativo dos trabalhos relaconados}
     \begin{tabular}{|c||c|c|p{4cm}|}
         \hline
         \textbf{Trabalho} & \textbf{\textit{Raspberry Pi}} & \textbf{PDI} & \textbf{Abordagem} \\ 
         \hline\hline
-        Shilpashree et al. (2015) & Sim    & Sim   & Algoritmo de redução de ruído RUF   \\ \hline
+        Shilpashree \textit{et al.} (2015) & Sim    & Sim   & Algoritmo de redução de ruído RUF   \\ \hline
         Gaier et al. (2013)  & Sim    & Sim   & Integração Arduino, Raspberry Pi, OpenCV para reconhecimento de padrões    \\ \hline
-        Senthilkumar et al. (2014)   & Sim   & Sim  & Algoritmo Eigenfaces    \\ \hline
-        Li et al. (2013)  & Não    & Sim  & Algoritmo de modelo global para a segmentação de vídeo  baseado na sobreposição de \textit{frames}   \\ \hline
-        Jabri et al. (2000)  & Não    & Sim   & Método de segmentação utilizando a separação de planos do vídeo    \\ \hline
-        Almeida et al. (2014)  & Não    & Sim   & Detecção e contagem de pessoas com base no algoritmo \textit{k-means}    \\ \hline
-        Siqueira (2015) & Não   & Sim  & Minimização dos \textit{frames} utilizados para o rastreamento em vídeo    \\ \hline
+        Senthilkumar \textit{et al.} (2014)   & Sim   & Sim  & Algoritmo Eigenfaces    \\ \hline
+        Li \textit{et al.} (2013)  & Não    & Sim  & Algoritmo de modelo global para a segmentação de vídeo  baseado na sobreposição de \textit{frames}   \\ \hline
+        Jabri \textit{et al.} (2000)  & Não    & Sim   & Método de segmentação utilizando a separação de planos do vídeo    \\ \hline
+        Almeida \textit{et al.} (2014)  & Não    & Sim   & Detecção e contagem de pessoas com base no algoritmo \textit{k-means}    \\ \hline
+        Siqueira e Machado (2015) & Não   & Sim  & Minimização dos \textit{frames} utilizados para o rastreamento em vídeo    \\ \hline
     \end{tabular}
     
     \fonte{O próprio autor, 2017}
@@ -494,11 +501,11 @@ O Quadro 2 apresenta um comparativo entre os trabalhos apresentados e suas abord
 \chapter{Metodologia}
 \label{cap:metodologia}
 
-Este capítulo apresenta os materiais e metodologias aplicados no desenvolvimento do sistema de detecção de pessoas em vídeo. Para a implementação do trabalho proposto, foi utilizada a placa \textit{Raspberry Pi}, 3ª geração do seu modelo B, com o sistema operacional \textit{Rasbian} em sua versão \textit{Pixel}, de setembro de 2016, onde é realizado o processamento do vídeo capturado pelo módulo de câmera sob a biblioteca OpenCV, em sua versão 3.1.0, os quais são detalhados nas subseções seguintes.
+Este capítulo apresenta os materiais e metodologias aplicados no desenvolvimento do sistema de detecção de pessoas em vídeo. Para a implementação do trabalho proposto, foi utilizada a placa \textit{Raspberry Pi}, 3ª geração do seu modelo B, com o sistema operacional \textit{Rasbian} em sua versão \textit{Pixel}, de setembro de 2016, onde é realizado o processamento do vídeo capturado pelo módulo de câmera sob a biblioteca OpenCV, em sua versão 3.3.0, os quais são detalhados nas seções seguintes.
 
 \section{materiais utilizados}
 
-Neste trabalho foi utilizado o \textit{Raspberry Pi} 3, modelo B com 1GB de memória e processador ARMv8 64-\textit{bit, quad-core} de 1.2GHz. O sistema operacional instalado no dispositivo é o \textit{Raspbian Jessie}, versão 8. Para a captura de imagens foi utilizado o módulo de câmera V2 com resolução de 8MP. Detalhes sobre o \textit{Raspberry Pi} e sua arquitetura são discutidos na Seção 2.2.
+Neste trabalho foi utilizado o \textit{Raspberry Pi} 3, modelo B com 1GB de memória e processador ARMv8 64-\textit{bit, quad-core} de 1.2GHz. O sistema operacional instalado no dispositivo é o \textit{Raspbian Jessie}, versão 8. Para a captura de imagens foi utilizado o módulo de câmera V2 com resolução de 8MP. Detalhes sobre o \textit{Raspberry Pi} e sua arquitetura são discutidos na Seção 2.3.
 
 \subsection{OpenCV}
 \textit{Open Source Computer Vision Library (OpenCV)} é uma biblioteca focada para desenvolvimento de aplicações voltadas ao Processamento Digital de Imagens. Desenvolvida em âmbito acadêmico pela Intel, em 1999, a biblioteca se expandiu para o campo comercial visando o crescimento da necessidade de sistemas focados em visão computacional. Tem como principais características:
