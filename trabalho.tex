@@ -97,7 +97,7 @@ Diversos projetos de software embarcado têm surgido nos últimos anos, motivado
 }}  já havia feito a previsão de que cada vez mais haveriam componentes menores e com maior processamento.
 Dois componentes populares são o Arduino e Raspberry Pi.  Essas placas, do tamanho de cartões de crédito, possuem o mesmo poder computacional de estações de trabalho convencionais, além de um custo muito menor.   O estudo de Processamento Digital de Imagens (PDI) tem sido empregado em campos da área industrial, saúde, segurança e robótica. Esse último, mais recentemente tem ganhado maior vínculo com a área de PDI, pois tem buscado a automação e a execução de tarefas mais complexas com o auxílio de sensores.
 
-O objetivo central deste trabalho é o desenvolvimento de uma aplicação embarcada para a plataforma \textit(Raspberry Pi}, tendo como funcionalidades:  
+O objetivo central deste trabalho é o desenvolvimento de uma aplicação embarcada para a plataforma \textit{Raspberry Pi}, tendo como funcionalidades:  
 
 \begin{enumerate}
     \item Processamento em tempo real dos quadros do vídeo capturado a partir do módulo de câmera;
@@ -537,10 +537,24 @@ Esta seção apresenta o processo utilizado para a segmentação de pessoas em v
 \end{figure}
 % -----------------------------------------------------------------------
 % -----------------------------------------------------------------------
-%%\chapter{Resultados Exeperimentais}
-%%\label{cap:resultados}
+\chapter{Resultados Exeperimentais}
+\label{cap:resultados}
 
-%%Validação da metodologia apresentada no \autoref{cap:metodologia}.
+Este capítulo apresenta os resultados obtidos a partir da metodologia construída na seção 4.2 aplicada à base de teste.
+
+O local usado como base para teste dos algoritmos foi montado no corredor de laboratórios de informática da Universidade Tuiuti do Paraná, onde o dispositivo \textit{Raspberry Pi} foi acoplado a uma escada para simular a altura d um câmera de segurança.
+Foram criados cenários que simulam a circulação de pessoas em um corredor, sendo eles:
+
+\begin{lista}
+    \item Uma pessoa se movimentando em direção à câmera.
+    \item Uma pessoa se afastando da câmera.
+    \item Duas pessoas no sentido da câmera.
+    \item Duas pessoas em direção contrária à câmera.
+    \item Três pessoas em direção à câmera.
+    \item Três pessoas em direção contrária à câmera.
+\end{lista}
+
+As figuras exemplificam as imagens obtidas para teste.
 
 % -----------------------------------------------------------------------
 % -----------------------------------------------------------------------
