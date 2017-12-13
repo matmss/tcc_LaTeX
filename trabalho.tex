@@ -28,7 +28,7 @@
 
 \preambulo{Trabalho de Conclusão de Curso apresentado ao curso de Bacharelado 
 em Ciência da Computação da Faculdade de Ciências Exatas e de Tecnologia da 
-Universidade Tuiuti do Paraná, como requisito à obtenção ao grau de Bacharel.}
+Universidade Tuiuti do Paraná, como requisito para obtenção do grau de Bacharel.}
 
 \instituicao{Universidade Tuiuti do Paraná}
 \local{Curitiba}
@@ -53,15 +53,17 @@ Universidade Tuiuti do Paraná, como requisito à obtenção ao grau de Bacharel
 
 % Resumo
 \begin{resumo}
-Com o surgimento e a viabilização econômica de sistemas e projetos embarcados, o ensino da computação se popularizou no meio educacional, fazendo o número de pesquisadores e usuários crescer rapidamente. Por isso a área de miniaturização de computadores e adoção dos sistemas embarcados vem colocando-se no meio profissional de maneira gradativa. O presente trabalho trata dos conceitos de Processamento Digital de Imagens aplicados ao Raspberry Pi, módulo de computação embarcada, e sua câmera. 
-Neste trabalho é apresentado um estudo de diferentes algoritmos para rastreamento de pessoas em vídeo utilizando o Rapberry Pi. Foram analisados os principais algoritmos disponíveis na biblioteca OpenCV para rastreamento: (1)~AdaBoost, (2)~Multiple Instance Learning~(MIL), (3) Median Flow e (4)~Tracking Learning Detection~(TLD). Com esta análise foi possível determinar quais técnicas são mais eficientes para serem aplicadas em sistemas de de vigilância, segurança e rastreamento. Os conhecimentos adquiridos com o desenvolvimento deste projeto somam funcionalidade e prática aos conceitos científicos e técnicos dos estudos de Ciência da Computação.
+Com o surgimento e a viabilização econômica de sistemas e projetos embarcados, o ensino da computação se popularizou no meio educacional, fazendo o número de pesquisadores e usuários crescer rapidamente. Por isso, a área de miniaturização de computadores e adoção dos sistemas embarcados vem colocando-se no meio profissional de maneira gradativa. O presente trabalho trata dos conceitos de Processamento Digital de Imagens aplicados ao Raspberry Pi, módulo de computação embarcada, e sua câmera. 
+Neste trabalho é apresentado um estudo de diferentes algoritmos para rastreamento de pessoas em vídeo utilizando o Rapberry Pi. Foram analisados os principais algoritmos disponíveis na biblioteca OpenCV para rastreamento: AdaBoost, Multiple Instance Learning (MIL), Median Flow e Tracking Learning Detection (TLD).
+Para validação dos algoritmos no rastreamento de pessoas, foi criada uma base de dados composta por 25 vídeos, separadas em 3 cenários de diferentes dificuldades: (1)~uma pessoa, (2)~duas pessoas andando juntas, e (3)~três pessoas, duas na mesma direção e outra em direção contrária. Os resultados mostraram que os algoritmos se comportam de maneira consistente no Raspberry Pi, sendo o MIL o mais estável e preciso.
+Atavés da análise, foi possível determinar o método MIL como o mais eficiente para aplicar em sistemas de vigilância, segurança e rastreamento.
 
 \palavraschave{Sistemas Embarcados, Raspberry Pi, Processamento Digital de Imagens, Segmentação de Pessoas, Vídeo}    
 \end{resumo}
 
 % Listas
 \listadefiguras
-%%\listadegraficos
+\listadegraficos
 %\listadetabelas
 \listadequadros
 \listadecodigos
@@ -69,11 +71,16 @@ Neste trabalho é apresentado um estudo de diferentes algoritmos para rastreamen
 
 % Lista de siglas
 \begin{siglas}
-  \item[PDI] Processamento Digital de Imagens
   \item[ARM] \textit{Acorn/Advanced RISC Machine}
+  \item[CSI] \textit{Camera Serial Interface}
+  \item[IoT] \textit{Internet of Things}
+  \item[KCF] \textit{Kernelized Correlation Filters}
+  \item[MIL] \textit{Multiple Instance Learning}
   \item[OpenCV] \textit{Open Source Computer Vision Library}
-  \item[MIL] Multiple Instance Learning
-  \item[TLD] Tracking Learning Detection 
+  \item[PDI] Processamento Digital de Imagens
+  \item[ROF] \textit{Rudin Osher Fatemi}
+  \item[SURF] \textit{Speeded Up Robust Features}
+  \item[TLD] \textit{Tracking Learning Detection}
 \end{siglas}
 % ---
 
@@ -93,15 +100,14 @@ Neste trabalho é apresentado um estudo de diferentes algoritmos para rastreamen
 \chapter{Introdução}
 \label{cap:introducao}
 
-Diversos projetos de \textit{software} embarcado têm surgido nos últimos anos, motivados principalmente pela evolução dos chips, processadores e aumento da capa-cidade computacional. \citeonline{moore:1965}  já havia feito a previsão de que cada vez mais haveriam componentes menores e com maior processamento. Dois componentes populares são o Arduino\footnote{\url{https://www.arduino.cc/}} e Raspberry Pi\footnote{\url{https://www.raspberrypi.org/}}.  Essas placas, do tamanho de cartões de crédito, possuem o mesmo poder computacional de estações de trabalho convencionais, além de um custo muito menor. 
+Diversos projetos de \textit{software} embarcado têm surgido nos últimos anos, motivados principalmente pela evolução dos chips, processadores e aumento da capacidade computacional.
+Gordon Moore, Químico e co-fundador da \textit{Intel Corporation}, em 1965, observou em seu artigo \textit{"Cramming more components onto integrated circuits"} que cada vez mais haveriam componentes menores e com maior processamento \cite{moore1998cramming}. Dois componentes populares são o Arduino\footnote{\url{https://www.arduino.cc/}} e Raspberry Pi\footnote{\url{https://www.raspberrypi.org/}}. Essas placas, do tamanho de cartões de crédito, possuem o mesmo poder computacional de estações de trabalho convencionais, com um custo muito menor. 
 
 O estudo de Processamento Digital de Imagens~(PDI) tem sido empregado em campos da área industrial, saúde, segurança e robótica. Esse último, mais recentemente tem ganhado maior vínculo com a área de PDI, pois tem buscado a automação e a execução de tarefas mais complexas com o auxílio de sensores.
 
-O objetivo deste trabalho é analisar a viabilidade do uso do Raspberry Pi em sistemas de segurança para o rastreamento de pessoas. Para isso, foram estudados diferentes algoritmos fornecidos pela biblioteca OpenCV. Os algoritmos estudados foram: (1)~AdaBoost, (2)~Multiple Instance Learning~(MIL), (3) Median Flow e (4)~Tracking Learning Detection~(TLD). 
+O objetivo deste trabalho é analisar a viabilidade do uso do Raspberry Pi em sistemas de segurança para o rastreamento de pessoas, utilizando técniicas do Processamento Digital de Imagens. Para isso, foram estudados diferentes algoritmos fornecidos pela biblioteca OpenCV. Os algoritmos estudados foram: (1)~AdaBoost, (2)~Multiple Instance Learning~(MIL), (3) Median Flow, (4)~Tracking Learning Detection~(TLD) e (5)~Kernelized Correlation Filters~(KCF). 
 
-Para validação dos algoritmos no rastreamento de pessoas, foi criada uma base de dados composta por 25 vídeos, separadas em 3 cenários de diferentes dificuldades: (1)~uma pessoa, (2)~duas pessoas andando juntas, e (3)~três pessoas, duas na mesma direção e outra em direção contrária. Os resultados mostraram que os algoritmos se comportam de maneira consistente no Raspberry Pi, sendo o MIL o mais estável e preciso.
-
-Este trabalho está dividido como segue. O \autoref{cap:fundamentacao-teorica} apresenta a fundamentação teórica abordando os conceitos de processamento embarcado no Raspberry Pi, conceitos de PDI, e estratégias para segmentação de pessoas em vídeo. O \autoref{cap:revisao-literatura} apresenta uma análise dos trabalhos relacionados ao problema de segmentação de pessoas em vídeo. O \autoref{cap:metodologia} apresenta a metodologia aplicada no desenvolvimento deste trabalho, seguido dos resultados experimentais apresentados no \autoref{cap:resultados}. Finalmente, o \autoref{cap:conclusao} apresenta as considerações finais.
+O trabalho está dividido como segue. O \autoref{cap:fundamentacao-teorica} apresenta a fundamentação teórica abordando os conceitos de processamento embarcado no Raspberry Pi, conceitos de PDI, e estratégias para segmentação de pessoas em vídeo. O \autoref{cap:revisao-literatura} apresenta uma análise dos trabalhos relacionados ao problema de segmentação de pessoas em vídeo. O \autoref{cap:metodologia} apresenta a metodologia aplicada no desenvolvimento deste trabalho, seguido dos resultados experimentais apresentados no \autoref{cap:resultados}. Finalmente, o \autoref{cap:conclusao} apresenta as conclusões.
 
 
 % -----------------------------------------------------------------------
@@ -109,17 +115,17 @@ Este trabalho está dividido como segue. O \autoref{cap:fundamentacao-teorica} a
 \chapter{Fundamentação Teórica}
 \label{cap:fundamentacao-teorica}
 
-Este capítulo apresenta os fundamentos necessários para a implementação deste projeto. Inicialmente são apresentados os conceitos relacionados ao PDI. Em seguida são apresentados detalhes sobre o Raspberry Pi e, finalmente, são descritas as características do problema de segmentação de pessoas em vídeo.
+Este capítulo apresenta os fundamentos necessários para a implementação deste projeto. Inicialmente são apresentados os conceitos relacionados ao Processamento Digital de Imagens. Em seguida são apresentados detalhes sobre o Raspberry Pi e, após, são descritas as características do problema de segmentação de pessoas em vídeo.
 
 
-\section{Processamento Digital de Imagens (PDI)}
+\section{Processamento Digital de Imagens}
 \label{sec:pdi}
 
-O conceito de processamento de imagens refere-se ao conjunto de métodos utilizados em imagens adquiridas, que devem ser corrigidas e melhor definidas, isso para que a interpretação visual se torne mais nítida e pontos perdidos na aquisição, e também na transmissão, possam ser restaurados com a finalidade de se obter a qualidade mais próxima possível da vida real~\cite{pdi2006}.
+O conceito de processamento de imagens refere-se ao conjunto de métodos utilizados em imagens adquiridas, que devem ser corrigidas e melhor definidas, isso para que a interpretação visual se torne mais nítida e pontos perdidos na aquisição, e também na transmissão, possam ser restaurados com a finalidade de se obter a qualidade mais próxima possível da realidade~\cite{pdi2006}.
 
 \subsection{Fundamentos das Imagens Digitais}
 
-Uma imagem pode ser definida como uma função de intensidade de luz sobre determinado ponto, tratada comumente de maneira bidimensional. Explorando de maneira minuciosa a definição de imagem, tem-se que para a obtenção de uma imagem, em um plano de coordenadas espaciais, dado por $(x, y)$ deve-se estabelecer um ponto de observação, também denominado ponto focal, como conforme mostra a \autoref{fig:aquisicao_sensor_felgueiras}, medir os graus de incidência e reflexão da luz gerada e presente no plano observável em consideração ao ponto de observação e sua redondeza, denominada cena~\cite{pdi2006}.
+Uma imagem pode ser definida como uma função de intensidade de luz sobre determinado ponto, tratada comumente de maneira bidimensional. Explorando de maneira minuciosa a definição de imagem, tem-se que para a obtenção de uma imagem, em um plano de coordenadas espaciais dado por $(x, y)$, deve-se estabelecer um ponto de observação, também denominado ponto focal, conforme mostra a \autoref{fig:aquisicao_sensor_felgueiras}, medir os graus de incidência e reflexão da luz gerada e presente no plano observável em consideração ao ponto de observação e sua redondeza, denominada cena~\cite{pdi2006}.
 
 \begin{figure}[htb]
     \legenda[fig:aquisicao_sensor_felgueiras]{Aquisição por sensor}
@@ -133,7 +139,7 @@ Em resumo, uma imagem é o conjunto de pontos convergentes que constrói um todo
 
 \subsection{Imagens Bidimensionais}
 
-O conceito de imagem bidimensional, corriqueiramente citado como 2D, refere-se à imagem obtida puramente através de câmeras, onde ocorre a perda da coordenada de profundidade do espaço-objeto. A imagem digital é constituída através de uma função, $f(x,y)$, descrita na \autoref{eq:imagem}, como coordenadas espaciais transcritas por meio de uma matriz, onde índices referem-se à posição de um pixel na imagem.
+O conceito de imagem bidimensional, corriqueiramente chamada de 2D, refere-se à imagem obtida puramente através de câmeras, onde ocorre a perda da coordenada de profundidade do espaço-objeto. A imagem digital é constituída através de uma função, $f(x,y)$, descrita na \autoref{eq:imagem}, como coordenadas espaciais transcritas por meio de uma matriz, onde índices referem-se à posição de um pixel na imagem.
 
 \begin{equation}
 \label{eq:imagem}
@@ -146,11 +152,11 @@ f(m-1,0) & f(m-1, 1) & \cdots & f(m-1, n-1)\\
 \end{bmatrix}
 \end{equation}
 
-A cor ou intensidade de uma imagem é obtida através do valor de cada tupla existente na matriz em escala de cinza~(medida que varia de $0$ a $255$), como apresentado na \autoref{fig:digitalizacao_imagem_felgueiras}. Para a aquisição de uma imagem bidimensional é necessário um equipamento capaz de identificar níveis de onda eletromagnética~(raio-X, infravermelho, ultravioleta, entre outros) e produzir um sinal elétrico correspondente para que um segundo equipamento possa transcrever o sinal físico para o meio digital.
+A cor ou intensidade de uma imagem é obtida através do valor de cada tupla existente na matriz em escala de cinza~(medida que varia de $0$ a $255$), como apresentado na \autoref{fig:digitalizacao_imagem_felgueiras}. Para a aquisição de uma imagem bidimensional é necessário um equipamento capaz de identificar níveis de ondas eletromagnéticas~(raio-X, infravermelho, ultravioleta, entre outros) e produzir um sinal elétrico correspondente para que um segundo equipamento possa transcrever o sinal físico para o meio digital.
 
 \begin{figure}[htb]
     \legenda[fig:digitalizacao_imagem_felgueiras]{Digitalização de uma imagem}
-    \fig{scale=0.9}{img/digitalizacao_imagem_felgueiras}
+    \fig{scale=1.0}{img/digitalizacao_imagem_felgueiras}
     \fonte{\citeonline[p. 39]{felgueiras2008}}
 \end{figure}
 
@@ -159,40 +165,40 @@ Após a transcrição do sinal recebido, é necessário armazenar a matriz para 
 
 \newpage
 
-Esse armazenamento pode ocorrer por curto prazo, no qual as ondas são armazenadas em buffers para que, dependendo do dispositivo, possa ocorrer nele próprio, por exemplo, um processamento inicial, sendo apenas a tradução para pixels ou até a montagem de uma imagem digital. Outro tipo de armazenamento típico é o massivo, onde os dados coletados são retidos para que, posteriormente, sejam analisados por programas para construir as imagens~\cite{pdi2006}.
+O armazenamento pode ocorrer por curto prazo, no qual as ondas são armazenadas em \textit{buffers} para que, dependendo do dispositivo, possa ocorrer nele próprio, por exemplo, um processamento inicial, sendo apenas a tradução para pixels ou até a montagem de uma imagem digital. Outro tipo de armazenamento típico é o massivo, onde os dados coletados são retidos para que, posteriormente, sejam analisados por programas para construir as imagens~\cite{pdi2006}.
 
 \subsection{Vídeo}
 
 Vídeo digital é o resultado de uma sequência de quadros~\textit{(frames)} de imagens digitais , representando uma determinada cena. A taxa de atualização de cada quadro se dá pela razão de quadros de imagens digitais por tempo contínuo, contado em segundos, e sua exibição é dada progressivamente.
 O armazenamento de vídeos leva em consideração a qualidade e o tamanho. Para isso, vários formatos~(\textit{codecs}) foram criados e são utilizados conforme a necessidade de recuperação das informações do vídeo e o suporte do hardware onde será reproduzido~\cite[p.6]{de2013arquitetura}.
 
-\subsection{Passos Fundamentais do PDI}
+\subsection{Passos Fundamentais do Processamento Digital de Imagens}
 
 Nesta seção são apresentados e definidos os passos fundamentais do PDI, mostrados na \autoref{fig:passos_pdi_gonzalez}.
 
 \begin{figure}[htb]
-    \legenda[fig:passos_pdi_gonzalez]{Passos fundamentais do PDI}
+    \legenda[fig:passos_pdi_gonzalez]{Passos fundamentais do Processamento Digital de Imagens}
     \fig{scale=0.6}{img/passos_pdi_gonzalez}
     \fonte{\citeonline{pdi2006}}
 \end{figure}
 
 \subsubsection{Aquisição de Imagens}
 
-A primeira etapa do PDI é definida por traduzir os aspectos visíveis do mundo real por meio de sensores capazes capturar uma banda eletromagnética e traduzir em sinais elétricos perceptíveis, bem como converter tais sinais em elementos digitais. Como exemplos de sensores, tem-se satélites, aparelhos de ressonância magnética e câmeras fotográficas~\cite[p.7–10]{pdi2006}.
+A primeira etapa do PDI é definida por traduzir os aspectos visíveis do mundo real por meio de sensores capazes de capturar uma banda eletromagnética e traduzir em sinais elétricos perceptíveis, bem como converter tais sinais em elementos digitais. Como exemplos de sensores tem-se satélites, aparelhos de ressonância magnética e câmeras fotográficas~\cite[p.7–10]{pdi2006}.
 
 \subsubsection{Pré-Pocessamento}
 
-A etapa de pré-processamento é responsável pela melhoria da imagem para aumento de qualidade, de modo algorítmico, para os processos seguintes. O pré-processamento consiste na aplicação das técnicas de melhoria de contraste, realce de características e correção de defeitos de captura, como por exemplo ruídos e foco~\cite[p.6]{pdi2006}.
+A etapa de pré-processamento é responsável pela melhoria da imagem para aumento da qualidade, de modo algorítmico, para os processos seguintes. O pré-processamento consiste na aplicação das técnicas de melhoria de contraste, realce de características e correção de defeitos de captura, como por exemplo, ruídos e foco~\cite[p.6]{pdi2006}.
 
 \subsubsection{Segmentação}
 
 Segundo \citeonline[p.6]{pdi2006}, a etapa de segmentação é responsável por separar a imagem em partes, regiões ou objetos de interesse e destacá-los em primeiro plano. Para a segmentação a imagem é tratada através dos valores reais dos \textit{pixels} existentes, ou da sua presença ou ausência~(modo binário). Tal processo baseia-se em três propriedades de uma imagem\cite[p.236-237]{solomon2000fundamentos}:
 
-\begin{lista}
-    \item Cor: diferença do espaço de cores para definir uma região.
-    \item Textura: diferenciação de intensidade espacial em uma imagem.
-    \item Movimento: subtração de quadros de imagens em fundo estacionário que pode definir com precisão a movimentação de um objeto.
-\end{lista}
+\begin{enumerate}
+    \item Cor: Diferença do espaço de cores para definir uma região;
+    \item Textura: Diferenciação de intensidade espacial em uma imagem;
+    \item Movimento: Subtração de quadros de imagens em fundo estacionário que pode definir com precisão a movimentação de um objeto.
+\end{enumerate}
 
 \subsubsection{Representação e Descrição}
 
@@ -200,71 +206,142 @@ Conforme \citeonline[p.6]{pdi2006}, a representação é a etapa de definição 
 
 \subsubsection{Reconhecimento e Interpretação}
 
-A etapa de reconhecimento e interpretação, segundo \citeonline[p.7 – 10]{pdi2006}, é a rotulação baseada na descrição de cada objeto presente na imagem e a atribuição de um significado, conforme a base de conhecimento, aos resultados adquiridos.
+A etapa de reconhecimento e interpretação, segundo \citeonline[p.7–10]{pdi2006}, é a rotulação baseada na descrição de cada objeto presente na imagem e a atribuição de um significado, conforme a base de conhecimento, aos resultados adquiridos.
 
 \subsubsection{Base de Conhecimento}
 
-Dado como o objeto ou o conjunto de imagens a ser estudado pelo PDI, a base de conhecimento é responsável por guiar cada etapa e definir a interação entre as mesmas \citeonline[p.6]{pdi2006}. Para que os objetos de processamento sejam acessados, o armazenamento é realizado em três categorias:
+Dado como o objeto ou o conjunto de imagens a ser estudado pelo PDI, a base de conhecimento é responsável por guiar cada etapa e definir a interação entre as mesmas \cite[p.6]{pdi2006}. Para que os objetos de processamento sejam acessados, o armazenamento é realizado em três categorias:
 
-\begin{lista}
-    \item De curto tempo: Armazenamento da imagem enquanto processada, em memória computacional~(\textit{frame buffers}), onde a velocidade de acesso é alta, isto é, cerca de 30 imagens por segundo.
-    \item Em massa ou \textit{on-line}: Armazenamento em unidades com capacidade para, no mínimo, algumas centenas de imagens contabilizadas em MB. Para que as informações estejam disponíveis e possam ser acessadas de maneira rápida, essas são comprimidas juntamente com suas informações (tamanho, número de cores, entre outras) em diferentes formatos.
-    \item Arquivamento: Armazenamento em massa sem a necessidade corrente de acesso, onde agrupamentos de imagens são estocados.
-\end{lista}
+    \begin{enumerate}
+        \item De curto tempo: Armazenamento da imagem enquanto processada, em memória computacional~(\textit{frame buffers}), onde a velocidade de acesso é alta, isto é, cerca de 30 imagens por segundo;
+        \item Em massa ou \textit{on-line}: Armazenamento em unidades com capacidade para, no mínimo, algumas centenas de imagens contabilizadas em MB. Para que as informações estejam disponíveis e possam ser acessadas de maneira rápida, essas são comprimidas juntamente com suas informações (tamanho, número de cores, entre outras) em diferentes formatos;
+        \item Arquivamento: Armazenamento em massa sem a necessidade corrente de acesso, onde agrupamentos de imagens são estocados.
+    \end{enumerate}
 
 %---------------------------------------------
 \section{Detecção de rastreamento em vídeo}
 
-Para detecção de movimento em vídeo, diversas técnicas podem ser empregadas. Dentre elas podemos destacar: (1)~AdaBoost, (2)~Multiple Instance Learning (MIL), (3)~Median Flow.
+Para detecção de movimento em vídeo, diversas técnicas podem ser empregadas. Dentre elas pode-se destacar: (1)~AdaBoost, (2)~Multiple Instance Learning (MIL), (3)~Median Flow, (4)~TLD, (5)~KCF.
 
 \subsection{AdaBoost}
 
-O AdaBoost~\cite{GrabnerGB06} é um algoritmo de aprendizado de máquina. Assim como outros algoritmos desta natureza, \textit{e.g.} Redes Neurais Artificiais, o AdaBoost possui duas etapas: (1)~treinamento e (2)~teste. Na etapa de treinamento, o algoritmo é alimentando com diversos exemplos de imagens e qual classe aquela imagem pertence. Desta maneira, várias imagens com movimento são usadas para ensinar o algoritmo a diferenciar onde ocorre ou não movimento. Nesta etapa de treino é gerado um classificador. O classificador é então utilizado na etapa de teste, onde o algoritmo recebe uma imagem e gera como saída onde ocorreu o movimento.
+O AdaBoost~\cite{grabner2006line} é um algoritmo de aprendizado de máquina. Assim como outros algoritmos dessa natureza, por exemplo, as Redes Neurais Artificiais, o AdaBoost possui duas etapas: treinamento e teste. Na etapa de treinamento o algoritmo é alimentando com diversos exemplos de imagens e qual classe aquela imagem pertence. Dessa maneira, várias imagens com movimento são usadas para ensinar o algoritmo a diferenciar onde ocorre ou não movimento, como na \autoref{fig:exemplo_adaboost}. Nessa etapa também é gerado um classificador. O classificador é então utilizado na etapa de teste, onde o algoritmo recebe uma imagem e gera como saída onde ocorreu o movimento, com o menor índice de erro, conforme equação \ref{eq:adaboost}.
+\begin{equation}
+\label{eq:adaboost}
+h^{strong}(X) = \sum^n_{n=1}\alpha _n-h^{sel}_n (x)
+\end{equation}
 
-Desta maneira, o sucesso do algoritmo está diretamente ligada à base de treino utilizada. Quanto maior a base, maior é o tempo de processamento, e melhor é o classificador produzido. Neste trabalho, será avaliada a implementação incorporada na biblioteca OpenCV, não sendo necessário realizar o treinamento do classificador.
+Desta maneira, o sucesso do algoritmo está diretamente ligada à base de treino utilizada. Quanto maior a base, maior é o tempo de processamento e melhor é o classificador produzido, como descrito na equação \ref{eq:adaboost1}. Neste trabalho, será avaliada a implementação incorporada na biblioteca OpenCV, não sendo necessário realizar o treinamento do classificador.
+\begin{equation}
+\label{eq:adaboost1}
+e_{n,m} = \frac{\lambda^{wrong}_{n,m}}{\lambda^{corr}_{n,m} + \lambda^{wrong}_{n,m}}
+\end{equation}
 
-\subsection{Multiple Instance Learning (MIL)}
+\begin{figure}[htb]
+    \legenda[fig:exemplo_adaboost]{Exemplo de execução do algoritmo Adaboost}
+    \fig{scale=1.0}{img/exemplo_adaboost}
+    \fonte{\citeonline{lu2009robust}}
+\end{figure}
 
-O Multiple Instance Learning~(MIL)~\cite{Babenko09visualtracking} é um algoritmo de aprendizado de máquina para treinamento não supervisionado. Desta maneira, os dados não precisam ser classificados para etapa de treino, sendo as classes identificadas pela próprio algoritmo. No contexto de detecção de movimento, o classificador é alimentado com diversas imagens, e assim ele consegue identificar aquilo que é movimento do que não é.
+\subsection{Multiple Instance Learning}
 
+O Multiple Instance Learning~(MIL)~\cite{Babenko09visualtracking} é um algoritmo de aprendizado de máquina para treinamento supervisionado. Desta maneira, os dados não precisam ser classificados para etapa de treino, sendo as classes identificadas pela próprio algoritmo. 
+Tais classes são rotuladas, conforme equação \ref{eq:mil}
+\begin{equation}
+\label{eq:mil}
+y_i = max_j (y_ij)
+\end{equation}
+Na medida em que são rotuladas e computadas as classes, o algoritmo compara a fim de maximizar a probabilidade delas serem o mesmo conjunto da imagem, segundo a equação \ref{eq:mil1}, demonstada na \autoref{fig:exemplo_mil}.
+\begin{equation}
+\label{eq:mil1}
+log L = \sum_i (log p(y_i | X_i))
+\end{equation}
+No contexto de detecção de movimento, o classificador é alimentado com diversas imagens, e assim ele consegue identificar onde há movimento.
+\begin{figure}[htb]
+    \legenda[fig:exemplo_mil]{Exemplo de execução do algoritmo Multiple Instance Learning}
+    \fig{scale=1.0}{img/exemplo_mil}
+    \fonte{\citeonline{Babenko09visualtracking}}
+\end{figure}
 
 \subsection{Median Flow}
 
-O Median Flow~\cite{Kalal10forward} é um algoritmo de rastreamento baseado no \textit{Backward Error}. O algoritmo realiza análises sucessivas na trajetória de movimento entre várias imagens no decorrer do tempo. Desta maneira, o algoritmo consegue identificar com maior precisão o deslocamento do movimento, mesmo em casos de oclusão do objeto. 
+O Median Flow~\cite{Kalal10forward-backwarderror} é um algoritmo de rastreamento baseado no \textit{Backward Error}. O algoritmo realiza análises sucessivas na trajetória de movimento entre várias imagens no decorrer do tempo.
+O conjunto de referência para a análise é dado sempre por uma região delimitada em par subsequente de \textit{frames}, conforme exemplificado na \autoref{fig:exemplo_median}.
 
+\begin{figure}[htb]
+    \legenda[fig:exemplo_median]{Exemplo de delimitação para o treino do Median Flow}
+    \fig{scale=1.0}{img/exemplo_medianflow}
+    \fonte{\citeonline{Kalal10forward-backwarderror}}
+\end{figure}
+
+Em seguida, o deslocamento desse conjunto é estimado dentro da área esparsa do vídeo, como na \autoref{fig:exemplo_median1} . Para que o algoritmo identifique com maior precisão o deslocamento do movimento, mesmo em casos de oclusão do objeto, é calculada a razão entre os deslocamentos estimados e a mediana dessa razão. 
+\begin{figure}[htb]
+    \legenda[fig:exemplo_median1]{Exemplo de dfinição da área para o treino do Median Flow}
+    \fig{scale=1.0}{img/exemplo_medianflow1}
+    \fonte{\citeonline{Kalal10forward-backwarderror}}
+\end{figure}
+
+\subsection{Tracking Learning Detection}
+Definido por \cite{kalal2012tracking}, Tracking-Learning-Detection (TLD) é um \textit{framework} composto pelas etapas de rastreamento, detecção e aprendizado.
+Esses três componentes tratam, respectvamente, da estimativa de movimentação de um objeto visível em \textit{frames} consecutivos, do tatamento independente e busca completa em cada \textit{frame} e da estimativa de erro gerada pelos fatores falso positivo e falso negativo das etapas anteriores.
+
+
+\subsection{Kernelized Correlation Filters}
+Kernelized Correlation Filters, KCF, é um algoritmo de rastreamento apresentado por \citeonline{henriques2015high} o qual trata do rastreamento em vídeo.
+O algoritmo traduz em dado analítico o vídeo, a saber uma matriz de valores para \textit{pixel}, correlacionando cada \textit{frame}. A correlação é tratada a partir da minimização de diferença entre pontos, conforme a equação \ref{eq:kcf}
+\begin{equation}
+\label{eq:kcf}
+min_w \sum_i (f(x_i)-y_i)^2+\lambda |w|^2
+\end{equation}
+
+Após a correlação, é possível tratar como valores binários de cada \textit{pixel}, assim minimizando o espaço de armazenamento e execução quando tata-se de uma grande quantidade de informações. Também foi verificado por \citeonline{henriques2015high} que a matiz resultante da correlação de máscara será uma matriz circulante, ou seja, uma matriz onde os valores de cada linha se repetem, apenas deslocando-se por $i$ posições, dadas pela correlação realizada, conforme a equação \ref{eq:kcf1}
+
+\begin{equation}
+\label{eq:kcf1}
+C(x) = 
+\begin{bmatrix}
+x_1 & x_2 & x_3 & \cdots & x_n\\
+x_n & x_1 & x_2 & \cdots & x_{n-1} \\
+x_{n-1} & x_n & x_1 & \cdots & x_{n-1} \\
+\vdots & \vdots & \vdots & \vdots & \\
+x_2 & x_3 & x_4 & \cdots & x_1\\
+\end{bmatrix}
+\end{equation}
 
 %---------------------------------------------
 
 \section{Arquitetura ARM}
 
-A arquitetura ARM (\textit{Acorn/Advanced RISC Machine}), modelo computacional com conjunto reduzido de instruções (\textit{Reduced Instruction Set Computer}) desenvolvido pela companhia britânica \textit{Acorn Computers (Cambridge)} para funcionalidades integradas de alto desempenho para aplicações embarcadas e para mercados emergentes, reduzindo a quantidade e tamanho dos transistores, o que reduz custo e consumo de energia. 
+A arquitetura ARM (\textit{Acorn/Advanced RISC Machine}) é um modelo computacional com conjunto reduzido de instruções (\textit{Reduced Instruction Set Computer}), desenvolvido pela companhia britânica \textit{Acorn Computers (Cambridge)} para funcionalidades integradas de alto desempenho para aplicações embarcadas e para mercados emergentes, reduzindo a quantidade e o tamanho dos transistores, o que reduz custo e consumo de energia \cite{armv8}.
 
-A implementação da microarquitetura ARM é dada em \textit{System-on-a-Chip (SoC)} ou \textit{Single-Board Computer} que compreende em uma única placa: microcontroladores~(microprocessadores integrados a circuitos e memória), GPU, co-processadores~(ARM Processor Architecture).
-A exemplo de um \textit{Single-Board-Computer}, temos: BeagleBone, Raspberry Pi, HiKey 960, Tinker Board.
+A implementação da microarquitetura ARM é dada em \textit{System-on-a-Chip (SoC)} ou \textit{Single-Board Computer}, que compreende em uma única placa microcontroladores~(microprocessadores integrados a circuitos e memória), GPU e co-processadores~(ARM Processor Architecture).
+A exemplo de um \textit{Single-Board-Computer}, tem-se: BeagleBone, Raspberry Pi, HiKey 960 e Tinker Board.
 
 \subsection{Raspberry Pi}
 \label{sec:raspberry}
 
-O \textit{Raspberry Pi} Pi é um computador com dimensões de um cartão de crédito~($85,6mm$ x $56,5mm$), com $45g$, anunciado em 2011~(ver \autoref{fig:raspberry_autor}) sendo seu primeiro modelo lançado em fevereiro de 2012. Com a finalidade de ser o computador mais barato em circulação, estimular e expandir o ensino de computação e programação, foi idealizado por Pete Lomas no Reino Unido tendo seu valor em torno de~$35$ dólares e código aberto.
+O \textit{Raspberry Pi}  é um computador com dimensões de um cartão de crédito~($85,6mm$ x $56,5mm$), com $45g$, anunciado em 2011~(ver \autoref{fig:raspberry_autor}) sendo seu primeiro modelo lançado em fevereiro de 2012. Com a finalidade de ser o computador mais barato em circulação, estimular e expandir o ensino de computação e programação, foi idealizado por Pete Lomas no Reino Unido, tendo seu valor em torno de~$35$ dólares e código aberto \cite{raspberrypi_found}.
 
 \begin{figure}[htb]
-    \legenda[fig:raspberry_autor]{Raspberry Pi - modelo B (v.2011.12)}
+    \legenda[fig:raspberry_autor]{Raspberry Pi Modelo B}
     \fig{scale=1.0}{img/raspberry_autor}
     \fonteautor
 \end{figure}
 
 O computador é baseado na arquitetura ARM, modelo computacional com conjunto reduzido de instruções criado para funcionalidades integradas de alto desempenho para aplicações embarcadas e para mercados emergentes.
 
-Tal arquitetura possibilita a criação de técnicas de micro-arquitetura tendo o foco no tamanho da implementação, desempenho e baixo consumo de energia. Em sua placa, o \textit{Raspberry Pi} apresenta um chip \textit{Broadcom BCM2835} (modelo A/Zero) de 32 \textit{bits}, \textit{BCM2835} (modelo A) ou \textit{BCM2836/BCM2837} (modelo B) de 32/64 \textit{bits}, com processador ARM1176JZF-S, ARM \textit{Cortex-A7} e ARM \textit{Cortex-A53}, respectivamente, com velocidades de 700 MHz a 1.2 GHz, o GPU é a \textit{Videocore} IV de 250 MHz, com capacidade de reprodução em alta definição (1080p). 
+Tal arquitetura possibilita a criação de técnicas de micro-arquitetura tendo o foco no tamanho da implementação, desempenho e baixo consumo de energia. Em sua placa, o \textit{Raspberry Pi} apresenta um chip \textit{Broadcom BCM2835} (modelo A/Zero) de 32 \textit{bits}, \textit{BCM2835} (modelo A) ou \textit{BCM2836/BCM2837} (modelo B) de 32/64 \textit{bits}, com processador ARM1176JZF-S, ARM \textit{Cortex-A7} e ARM \textit{Cortex-A53}, respectivamente, com velocidades de 700 MHz a 1.2 GHz. Sua GPU é a \textit{Videocore} IV de 250 MHz, com capacidade de reprodução em alta definição (1080p). 
 
-A memória (SDRAM) é de 256 MB, 512 MB e 1 GB, para os modelos A, Zero e B, respectivamente. Também compõem a placa: portas USB 2.0, interface de entrada de vídeo CSI (\textit{Camera Serial Interface}), saída de vídeo digital HDMI e analógico através do componente GPIO (\textit{General-Purpose Input/Output}), o qual também possibilita a conexão de periféricos. A fonte de energia, via USB, é de 5 V.
+A memória (SDRAM) é de 256 MB, 512 MB e 1 GB, para os modelos A, Zero e B, respectivamente. Também compõem a placa portas USB 2.0, interface de entrada de vídeo CSI (\textit{Camera Serial Interface}) e saída de vídeo digital HDMI e analógico através do componente GPIO (\textit{General-Purpose Input/Output}), o qual também possibilita a conexão de periféricos. A fonte de energia, via USB, é de 5 V.
 
 Seu armazenamento se dá através de cartões de memória SD (modelo A/B), MicroSDHC (modelo B) e MMC~(modelo Zero) com capacidade a ser definida pelo utilizador, onde serão instalados o sistema operacional e demais aplicações.
-Os sistemas operacionais adotados para a Raspberry Pi variam conforme a sua finalidade. Em sua grande maioria, são sistemas baseados em \textit{Linux} e otimizados para o \textit{Raspberry} como o popular \textit{Raspbian} e o \textit{PiDora}. Recentemente, com o avanço da Internet das Coisas~(\textit{IoT}), foi possível incluir o \textit{Windows} 10 como sistema operacional base.
+Os sistemas operacionais adotados para a Raspberry Pi variam conforme a sua finalidade. Em sua grande maioria são sistemas baseados em \textit{Linux} e otimizados para o \textit{Raspberry}, como o popular \textit{Raspbian} e o \textit{PiDora}. Recentemente, com o avanço da Internet das Coisas~(\textit{IoT}), foi possível incluir o \textit{Windows} 10 como sistema operacional base
+\cite{rapsberripi_}.
 
 \subsection{Câmera Raspberry Pi}
 
 Módulo adicional ao \textit{Raspberry}, a \textit{Raspberry Pi Câmera}~(ver \autoref{fig:modulo_camera_autor}) é ligada ao socket CSI (\textit{Camera Serial Interface}), interface projetada especificamente para a conexão com a câmera. O primeiro modelo vem com um sensor \textit{OmniVision} OV5647 de 5 \textit{Mega Pixels} para imagens e suporte a vídeos em 1080p 30fps, 720p 60fps e VGA90. O segundo modelo, v2, traz um sensor Sony IMX219 de 8 \textit{Mega Pixels}, com maior desempenho em baixa-luminosidade e fidelidade a cores. A conexão com a porta CSI se dá através de um cabo do tipo \textit{ribbon} invertido, com 15 vias.
+\cite{raspberrypi_camera}
 
 \begin{figure}[htb]
     \legenda[fig:modulo_camera_autor]{Módulo da câmera Raspberry Pi}
@@ -281,23 +358,23 @@ Este capítulo apresenta uma revisão dos trabalhos relacionados a detecção de
 
 \section{Processamento de Imagens com Raspberry Pi}
 
-\citeonline{shilpashree2015implementation} apresentam o processamento de imagens através do computador \textit{Raspberry Pi}, com seus componentes, como, por exemplo, a câmera \textit{Pi}. Os autores apresentam a implementação de metodologias e algoritmos com seu fluxo de ação para a captação de imagens sem ruídos. O conceito de processamento de imagens é explanado de maneira sucinta, como a captura por câmera, processamento através de um sistema e amostragem da imagem processada, conforme fluxos representados na \autoref{fig:fluxo_shilpashree} e \autoref{fig:fluxo_simples_shilpashree}.
+\citeonline{shilpashree2015implementation} apresentam o processamento de imagens através do computador \textit{Raspberry Pi}, com seus componentes, como, por exemplo, a câmera \textit{Pi}. Os autores apresentam a implementação de metodologias e algoritmos com seu fluxo de ação para a captação de imagens sem ruídos. O conceito de processamento de imagens é explanado de maneira sucinta, como a captura por câmera, processamento através de um sistema e amostragem da imagem processada, conforme fluxos representados nas Figuras 6 e 7.
 
 \begin{figure}[htb]
-    \legenda[fig:fluxo_shilpashree]{Fluxo de execução proposto para processamento}
+    \legenda[fig:fluxo_shilpashree]{Fluxo de execução proposto por Shilpashree \textit{et al}}
   \fig{scale=0.5}{img/fluxo_shilpashree}
     \fonte{\citeonline{shilpashree2015implementation}}
 \end{figure}
 
 \begin{figure}[htb]
-    \legenda[fig:fluxo_simples_shilpashree]{Visão geral do fluxo}
+    \legenda[fig:fluxo_simples_shilpashree]{Visão geral do fluxo proposto por Shilpashree \textit{et al}}
   \fig{scale=0.8}{img/fluxo_simples_shilpashree}
     \fonte{\citeonline{shilpashree2015implementation}}
 \end{figure}
 
-O artigo apresenta o dispositivo Raspberry Pi, uma placa com \textit{chip Broadcom} 700MHz, com CPU ARM 32 \textit{bits}, rodando um sistema operacional Linux a partir de um cartão SD. Os autores utilizaram um módulo de câmera de 15 pinos, com resolução de 5MP, o que traz como resultado uma imagem de até $1920$ x $1080$ pixels e um vídeo com captura de aproximadamente 30 quadros por segundo. O módulo utiliza conectores \textit{Camera Serial Interface}~(CSI) para serem inseridos diretamente na interface desenvolvida para câmeras do dispositivo, sendo sua lente capaz de entregar um vídeo de alta qualidade.
+O artigo apresenta o dispositivo Raspberry Pi, uma placa com \textit{chip Broadcom} 700MHz, com CPU ARM 32 \textit{bits}, rodando um sistema operacional Linux a partir de um cartão SD. Os autores utilizaram um módulo de câmera de 15 pinos, com resolução de 5MP, o que traz como resultado uma imagem de até $1920 x 1080$ \textit{pixels} e um vídeo com captura de aproximadamente 30 quadros por segundo. O módulo utiliza conectores \textit{Camera Serial Interface}~(CSI) para serem inseridos diretamente na interface desenvolvida para câmeras do dispositivo, sendo sua lente capaz de entregar um vídeo de alta qualidade.
 
-A metodologia aplicada traz a instalação do sistema operacional a ser utilizado na placa, bem como a inserção do módulo de câmera. Os algoritmos foram desenvolvidos usando a linguagem de programação \textit{Python}. O algoritmo utilizado para demonstrar o processamento de imagem realizado na placa Raspberry Pi é \textit{Rudin-Osher-Fatemi}~(ROF). Esse algoritmo aplica uma suavização na imagem, retirando os ruídos da imagem captada, minimizando as diferenças para a imagem desejada e preservando as bordas e estruturas reais. Como resultado da aplicação, o algoritmo apresentou imagens mais nítidas, tendo sido executado com sucesso no dispositivo, como pode ser visto na \autoref{fig:suavizacao_shilpashree}.
+A metodologia aplicada traz a instalação do sistema operacional a ser utilizado na placa, bem como a inserção do módulo de câmera. Os algoritmos foram desenvolvidos usando a linguagem de programação \textit{Python}. O algoritmo utilizado para demonstrar o processamento de imagem realizado na placa Raspberry Pi é \textit{Rudin-Osher-Fatemi}~(ROF). Esse algoritmo aplica uma suavização na imagem, retirando os ruídos da imagem capturada, minimizando as diferenças para a imagem desejada e preservando as bordas e estruturas reais. Como resultado da aplicação, o algoritmo apresentou imagens mais nítidas, tendo sido executado com sucesso no dispositivo, como mosta a \autoref{fig:suavizacao_shilpashree}.
 
 \begin{figure}[htb]
     \legenda[fig:suavizacao_shilpashree]{Suavização com ROF}
@@ -310,26 +387,26 @@ A metodologia aplicada traz a instalação do sistema operacional a ser utilizad
 \citeonline{gaier2013} apresentam o processamento de imagens por meio da biblioteca OpenCV implementada no computador \textit{Raspberry Pi}, atrelado a um robô construído a partir dos componentes da plataforma Arduino~(ver \autoref{fig:robo_gaier}) com o propósito da identificação de padrões de maneira inteligente.
 
 \begin{figure}[htb]
-    \legenda[fig:robo_gaier]{Robô construído para a aplicação}
+    \legenda[fig:robo_gaier]{Robô construído por Gaier e Silva para a identificação de padrões}
   \fig{scale=0.75}{img/robo_gaier}
     \fonte{\citeonline{gaier2013}}
 \end{figure}
 
 Para a identificação foi utilizada a biblioteca OpenCV, que tem como seus diferenciais ser multiplataforma e focada em ambientes móveis, por ser rápida. O controle de movimentos e resposta do robô ao ambiente foram configurados dentro do Arduino Uno, plataforma específica para elaboração de projetos eletrônicos, com maior popularidade na robótica, onde sua configuração e instalação é fácil e prática, além das respostas serem ágeis, pela maneira como é instalada, diretamente nos circuitos do robô.
 
-As técnicas utilizadas para a identificação de padrões incluem a detecção de bordas por meio do algoritmo de \textit{Canny}, que estabelece como premissas a não perda de nenhuma borda presente na imagem, a maior precisão nas bordas com relação ao mundo real e a completa eliminação de ruído, para que uma borda seja estabelecida apenas uma vez; e também o \textit{Speeded Up Robust Features}~(SURF), técnica que traduz a imagem a um conjunto de coordenadas cartesianas para que seja criado um padrão de escala~(ver \autoref{fig:aplicacao_tecnica_gaier}), a ser aplicado em outro cenário onde deverá ser marcado e exibido um objeto correspondente. Ambas as técnicas aplicam transformações gaussianas e escalas de cinza para obter maior precisão sem perda de informação.
+As técnicas utilizadas para a identificação de padrões incluem a detecção de bordas por meio do algoritmo de \textit{Canny}, que estabelece como premissas a não perda de nenhuma borda presente na imagem, a maior precisão nas bordas com relação ao mundo real e a completa eliminação de ruído, isso para que uma borda seja estabelecida apenas uma vez; e também o \textit{Speeded Up Robust Features}~(SURF), técnica que traduz a imagem a um conjunto de coordenadas cartesianas para que seja criado um padrão de escala~(ver \autoref{fig:aplicacao_tecnica_gaier}) a ser aplicado em outro cenário onde deverá ser marcado e exibido um objeto correspondente. Ambas as técnicas aplicam transformações gaussianas e escalas de cinza para obter maior precisão sem perda de informação.
 
 \begin{figure}[htb]
-    \legenda[fig:aplicacao_tecnica_gaier]{Exemplo da aplicação da técnica SURF}
-  \fig{scale=0.75}{img/aplicacao_tecnica_gaier}
+    \legenda[fig:aplicacao_tecnica_gaier]{Exemplo de aplicação da técnica SURF}
+    \fig{scale=0.75}{img/aplicacao_tecnica_gaier}
     \fonte{\citeonline{gaier2013}}
 \end{figure}
 
-A implementação foi testada no robô montado, passando por cada ponto de tratamento e passo dos algoritmos. Com o robô treinado a partir de uma imagem (Figura 12), obteve-se êxito na busca pelo contorno dentro de um ambiente com certo atraso na visualização das respostas, porém não afetando no seu resultado, e com comunicação estável entre as diferentes plataformas.
+A implementação foi testada no robô montado, passando por cada ponto de tratamento e passo dos algoritmos. Com o robô treinado a partir de uma imagem (\autoref{fig:treino_identificacao_gaier}), obteve-se êxito na busca pelo contorno dentro de um ambiente com certo atraso na visualização das respostas, porém não afetando no seu resultado, e com comunicação estável entre as diferentes plataformas.
 
 \begin{figure}[htb]
     \legenda[fig:treino_identificacao_gaier]{Treino para identificação de padrões}
-  \fig{scale=0.75}{img/treino_identificacao_gaier}
+    \fig{scale=0.75}{img/treino_identificacao_gaier}
     \fonte{\citeonline{gaier2013}}
 \end{figure}
 
@@ -341,7 +418,7 @@ Para a aplicação é especificado o sistema embarcado utilizando uma placa Rasp
 
 \begin{figure}[htb]
     \legenda[fig:fluxograma_senthilkumar]{Fluxograma do processamento}
-  \fig{scale=0.5}{img/fluxograma_senthilkumar}
+  \fig{scale=1.0}{img/fluxograma_senthilkumar}
     \fonte{\citeonline{senthilkumar2014embedded}}
 \end{figure}
 
@@ -350,7 +427,7 @@ Os autores concluíram que o sistema proposto é menor e mais ágil do que as ap
 
 \section{Segmentação de imagens em vídeo}
 
-\citeonline{li2013video} propõem uma segmentação de múltiplas imagens abordada por um algoritmo que trata a superfície adquirida da segmentação inicial dos quadros do vídeo. Tal segmentação de vídeo é realizada a partir da sobreposição de faixas do vídeo que é reconstruída a partir de algoritmos não-supervisionados.
+\citeonline{li2013video} propõem uma segmentação de múltiplas imagens abordada por um algoritmo que trata a superfície adquirida da segmentação inicial dos quadros do vídeo. Tal segmentação de vídeo é realizada a partir da sobreposição de faixas do vídeo que é reconstruída a partir de algoritmos não supervisionados.
 
 O artigo propõe resolver o problema de segmentação de vídeo não normalizada, separando todos os quadros simultaneamente para gerar uma única imagem disposta quadro-a-quadro. Consequentemente, gerar um modelo global de trilha para buscar e validar em cada quadro se o padrão é mantido, atualizando assim sempre os modelos dentro da base. A aplicação do método construído é exemplificada na \autoref{fig:aplicacao_li}.
 
@@ -368,23 +445,23 @@ Para cada quadro foi utilizado um algoritmo de separação por múltiplas imagen
 
 \begin{figure}[htb]
     \legenda[fig:imagem_inicial_jabri]{Imagem em que a segmentação será aplicada}
-  \fig{scale=1.0}{img/imagem_inicial_jabri}
+  \fig{scale=1.2}{img/imagem_inicial_jabri}
     \fonte{\citeonline{jabri2000detection}}
 \end{figure}
 
 O método é dividido em três partes para segmentar a região onde estará a pessoa a ser identificada:
 
-\begin{lista}
-    \item Separar e manter o fundo da imagem.
-    \item Subtrair da imagem original o fundo.
+\begin{enumerate}
+    \item Separar e manter o fundo da imagem;
+    \item Subtrair da imagem original o fundo;
     \item Selecionar a parte frontal da imagem.
-\end{lista}
+\end{enumerate}
 
 A separação é realizada através da medida de peso de cada pixel em duas imagens subsequentes, onde cada vez mais ao fundo, mais leve e estático o pixel será. A resultante do método é apresentada na \autoref{fig:fundo_jabri}.
 
 \begin{figure}[htb]
     \legenda[fig:fundo_jabri]{Segmentação do fundo da cena}
-  \fig{scale=1.2}{img/fundo_jabri}
+  \fig{scale=1.5}{img/fundo_jabri}
     \fonte{\citeonline{jabri2000detection}}
 \end{figure}
 
@@ -399,7 +476,7 @@ A separação através de bordas, \autoref{fig:bordas_jabri}, é calculada pela 
 A imagem frontal é obtida através da diferença de escala de cinza atribuída na imagem retirada. Para que se extraia com maior definição, é aplicada a extração de contornos, conforme mostra a \autoref{fig:resultado_jabri}.
 
 \begin{figure}[htb]
-    \legenda[fig:resultado_jabri]{Resultado da diferença entre o vídeo original e a separação da cena}
+    \legenda[fig:resultado_jabri]{Resultado da segmentação de uma pessoa em vídeo}
   \fig{scale=1.2}{img/resultado_jabri}
     \fonte{\citeonline{jabri2000detection}}
 \end{figure}
@@ -414,19 +491,19 @@ As técnicas de Processamento Digital de Imagens escolhidas pelos autores para a
 
 A abordagem segue o seguinte fluxo:
 \begin{lista}
-    \item Captura de vídeo.
-    \item Remoção do plano de fundo.
-    \item Segmentação por \textit{k-means}.
-    \item Rastreamento.
-    \item Validação.
-    \item Detecção.
+    \item Captura de vídeo;
+    \item Remoção do plano de fundo;
+    \item Segmentação por \textit{k-means};
+    \item Rastreamento;
+    \item Validação;
+    \item Detecção;
     \item Contagem.
 \end{lista}
 
 Utilizando a técnica \textit{k-means} após a diferença entre os canais da imagem e definição do que faz parte do fundo do vídeo, é estimado o número de centróides, que correspondem ao número de pessoas na cena, bem como a área de cada centróide, correspondendo ao tamanho médio de uma pessoa, ilustrado na \autoref{fig:kmeans_almeida}.
 
 \begin{figure}[htb]
-    \legenda[fig:kmeans_almeida]{Resultado da diferença entre o vídeo original e a separação da cena}
+    \legenda[fig:kmeans_almeida]{Resultado da aplicação do algortimo \textit{k-means}}
   \fig{scale=1.0}{img/kmeans_almeida}
     \fonte{\citeonline{deimplementaccao}}
 \end{figure}
@@ -439,7 +516,7 @@ Como experimento, o algoritmo foi treinado em dois ambientes, um instável e um 
 De acordo com o \autoref{quadro:resultados_almeida}, foi visto que, com o melhor ajuste de parâmetros e filtro eliminando ruídos, os resultados seriam mais precisos.
 
 \begin{quadro}[htb]
-    \legenda[quadro:resultados_almeida]{Comparativo dos resultados obtidos}
+    \legenda[quadro:resultados_almeida]{Comparativo dos resultados obtidos por Almeida}
     \begin{tabular}{|c|c|}
         \hline
         \textbf{} & \textbf{Método Original}\\ 
@@ -458,11 +535,11 @@ De acordo com o \autoref{quadro:resultados_almeida}, foi visto que, com o melhor
 
 \section{Rastreamento de pessoas em vídeos de fundo dinâmico}
 
-\citeonline{siqueiraavaliaccao} apresentam uma minimização no número de quadros a serem analisados para a detecção e rastreamento de pessoas em vídeo. Utilizando como método principal para a segmentação, o autor baseou-se no classificador \textit{Adaboost}, esquematizado na \autoref{fig:classificador_adaboost_siqueira}. O classificador consiste na combinação linear de características identificadas por meio do método \textit{Mean Shift}, que define um objeto segundo suas medidas ou cor e delimitando-as segundo o Filtro de \textit{Kalman}.
+\citeonline{siqueiraavaliaccao} apresentam uma minimização no número de quadros a serem analisados para a detecção e rastreamento de pessoas em vídeo. Utilizando como método principal a segmentação, o autor baseou-se no classificador \textit{Adaboost}, esquematizado na \autoref{fig:classificador_adaboost_siqueira}. O classificador consiste na combinação linear de características identificadas por meio do método \textit{Mean Shift}, que define um objeto segundo suas medidas ou cor e delimitando-as segundo o Filtro de \textit{Kalman}.
 
 \begin{figure}[htb]
     \legenda[fig:classificador_adaboost_siqueira]{Esquematização do classificador Adaboost}
-  \fig{scale=0.7}{img/classificador_adaboost_siqueira}
+  \fig{scale=1.0}{img/classificador_adaboost_siqueira}
     \fonte{\citeonline{siqueiraavaliaccao}}
 \end{figure}
 
@@ -476,7 +553,7 @@ Seguindo a classificação, é aplicada uma função do tipo \textit{Haar} (\aut
     \fonte{\citeonline{siqueiraavaliaccao}}
 \end{figure}
 
-Seguindo a estratégia de diminuição de quadros, o autor utilizou-se de um sensor de captura de 16 quadros por segundo. Após a aplicação dos métodos descritos, percebe-se, conforme mostra a \autoref{fig:resultado_siqueira}, que a detecção não se baseia diretamente na quantidade de elementos analisados, mas sim nas características definidas para o objeto a ser detectado ou rastreado, podendo assim diminuir a quantidade de quadros coletados para análise.
+Seguindo a estratégia de diminuição de quadros, os autorer utilizaram-se de um sensor de captura de 16 quadros por segundo. Após a aplicação dos métodos descritos, percebe-se, conforme mostra a \autoref{fig:resultado_siqueira}, que a detecção não se baseia diretamente na quantidade de elementos analisados, mas sim nas características definidas para o objeto a ser detectado ou rastreado, podendo assim diminuir a quantidade de quadros coletados para análise.
 
 \begin{figure}[htb]
     \legenda[fig:resultado_siqueira]{Resultado da aplicação dos métodos Adaboost e Haar}
@@ -490,18 +567,18 @@ Seguindo a estratégia de diminuição de quadros, o autor utilizou-se de um sen
 O \autoref{quadro:comparativo_trabalhos} apresenta um comparativo entre os trabalhos apresentados e suas abordagens.
 
 \begin{quadro}[htb]
-    \legenda[quadro:comparativo_trabalhos]{Comparativo dos trabalhos relaconados}
-    \begin{tabular}{|c||c|c|p{4.5cm}|}
+    \legenda[quadro:comparativo_trabalhos]{Comparativo dos trabalhos relacionados}
+    \begin{tabular}{|c||c|c| p{4.5cm}|}
         \hline
-        \textbf{Trabalho} & \textbf{\textit{Raspberry Pi}} & \textbf{PDI} & \textbf{Abordagem} \\ 
+        \textbf{Trabalho} & \textbf{\textit{Raspberry Pi}} & \textbf{PDI} &   \textbf{Abordagem} \\ 
         \hline\hline
-        Shilpashree \textit{et al.} (2015) & Sim    & Sim   & Algoritmo de redução de ruído RUF   \\ \hline
-        Gaier et al. (2013)  & Sim    & Sim   & Integração Arduino, Raspberry Pi, OpenCV para reconhecimento de padrões    \\ \hline
-        Senthilkumar \textit{et al.} (2014)   & Sim   & Sim  & Algoritmo Eigenfaces    \\ \hline
-        Li \textit{et al.} (2013)  & Não    & Sim  & Algoritmo de modelo global para a segmentação de vídeo  baseado na sobreposição de \textit{frames}   \\ \hline
-        Jabri \textit{et al.} (2000)  & Não    & Sim   & Método de segmentação utilizando a separação de planos do vídeo    \\ \hline
-        Almeida \textit{et al.} (2014)  & Não    & Sim   & Detecção e contagem de pessoas com base no algoritmo \textit{k-means}    \\ \hline
-        Siqueira e Machado (2015) & Não   & Sim  & Minimização dos \textit{frames} utilizados para o rastreamento em vídeo    \\ \hline
+        Shilpashree \textit{et al.} (2015) & Sim    & Sim   & Algoritmo de redução de ruído ROF.   \\ \hline
+        Gaier et al. (2013)  & Sim    & Sim   & Integração Arduino, \textit{Raspberry Pi} e OpenCV para reconhecimento de padrões.    \\ \hline
+        Senthilkumar \textit{et al.} (2014)   & Sim   & Sim  & Algoritmo \textit{Eigenfaces}.    \\ \hline
+        Li \textit{et al.} (2013)  & Não    & Sim  & Algoritmo de modelo global para a segmentação de vídeo  baseado na sobreposição de \textit{frames}.   \\ \hline
+        Jabri \textit{et al.} (2000)  & Não    & Sim   & Método de segmentação utilizando a separação de planos do vídeo.    \\ \hline
+        Almeida \textit{et al.} (2014)  & Não    & Sim   & Detecção e contagem de pessoas com base no algoritmo \textit{k-means}.    \\ \hline
+        Siqueira e Machado (2015) & Não   & Sim  & Minimização dos \textit{frames} utilizados para o rastreamento em vídeo.    \\ \hline
     \end{tabular}
     \fonteautor
 \end{quadro}
@@ -511,7 +588,7 @@ O \autoref{quadro:comparativo_trabalhos} apresenta um comparativo entre os traba
 \chapter{Materiais e Métodos}
 \label{cap:metodologia}
 
-Este capítulo apresenta os materiais e metodologias aplicados no desenvolvimento do sistema de detecção de pessoas em vídeo. Para a implementação do trabalho proposto, foi utilizada a placa Raspberry Pi, 3ª geração do seu modelo B, com o sistema operacional \textit{Rasbian} em sua versão \textit{Pixel}, de setembro de 2016, onde é realizado o processamento do vídeo capturado pelo módulo de câmera sob a biblioteca OpenCV, em sua versão 3.3.0, os quais são detalhados nas seções seguintes.
+Este capítulo apresenta os materiais e metodologias aplicados no desenvolvimento do sistema de detecção de pessoas em vídeo. Para a implementação do trabalho proposto foi utilizada a placa Raspberry Pi, 3ª geração do seu modelo B, com o sistema operacional \textit{Rasbian} em sua versão \textit{Pixel}, de setembro de 2016, onde é realizado o processamento do vídeo capturado pelo módulo de câmera sob a biblioteca OpenCV, em sua versão 3.3.0, os quais são detalhados nas seções seguintes.
 
 \section{Materiais utilizados}
 
@@ -522,10 +599,10 @@ Neste trabalho foi utilizado o \textit{Raspberry Pi} 3, modelo B com 1GB de mem�
 \textit{Open Source Computer Vision Library}~(OpenCV) é uma biblioteca focada para desenvolvimento de aplicações voltadas ao PDI. Desenvolvida em âmbito acadêmico pela Intel, em 1999, a biblioteca se expandiu para o campo comercial visando o crescimento da necessidade de sistemas focados em visão computacional. As principais características do OpenCV são:
 
 \begin{lista}
-	    \item Biblioteca multiplataforma, com implementação a diversas linguagens de programação, como por exemplo, C++, Java, MatLab, Python, Perl e Ruby.
-	    \item Dividida em módulos: \textit{cv} (funções principais), \textit{highgui} (desenvolvimento de interface gráfica) e \textit{cxcore} (estruturas de dados e funções de álgebra linear).
+	    \item Biblioteca multiplataforma com implementação a diversas linguagens de programação, como por exemplo, C++, Java, MatLab, Python, Perl e Ruby;
+	    \item Dividida em módulos: \textit{cv} (funções principais), \textit{highgui} (desenvolvimento de interface gráfica) e \textit{cxcore} (estruturas de dados e funções de álgebra linear);
 	    \item Focada no desenvolvimento de sistemas de Processamento Digital de Imagens, análise estrutural e de movimento, rastreamento, entre outros;
-	    \item Suas funções tratam de imagens após a etapa de pré-processamento, onde essas imagens podem ser redimensionadas, padronizadas e filtradas para diminuição de ruídos.
+	    \item Suas funções tratam de imagens após a etapa de pré-processamento, onde essas imagens podem ser redimensionadas, padronizadas e filtradas para diminuição de ruídos;
 	    \item As funções implementam: detecção mais detalhada de ruídos, extração de informações, dentre outras.
 \end{lista}
 
@@ -533,15 +610,17 @@ Neste trabalho foi utilizado o \textit{Raspberry Pi} 3, modelo B com 1GB de mem�
 
 \section{Metodologia}
 
-Neste trabalho foram analisados os métodos descritos na seção~\autoref{sec:pdi}. Os métodos são: (1)~AdaBoost, (2)~MIL, (3) Median Flow e (4)~TLD. Estes métodos estão disponíveis na biblioteca OpenCV. As funções utilizadas para a criação dos classificadores são apresentadas no \autoref{cod:codigo1} e a utilização do classificador é apresentada no \autoref{cod:codigo2}\footnote{\url{https://github.com/spmallick/learnopencv/}}.
+Neste trabalho foram analisados os métodos descritos na seção~\autoref{sec:pdi}. Os métodos são: (1)~AdaBoost, (2)~MIL, (3) Median Flow, (4)~TLD e (5)~KCF. Estes métodos estão disponíveis na biblioteca OpenCV. As funções utilizadas para a criação dos classificadores são apresentadas no \autoref{cod:codigo1} e a utilização do classificador é apresentada no \autoref{cod:codigo2}\footnote{\url{https://github.com/spmallick/learnopencv/}}.
 
 \begin{codigo}[htb]
     \legenda[cod:codigo1]{Criação dos classificadores no OpenCV}
     \begin{lstlisting}[language=python]
-            if tracker_type == 'BOOSTING':
+        if tracker_type == 'BOOSTING':
             tracker = cv2.TrackerBoosting_create()
         if tracker_type == 'MIL':
             tracker = cv2.TrackerMIL_create()
+        if tracker_type == 'KCF':
+            tracker = cv2.TrackerKCF_create()
         if tracker_type == 'TLD':
             tracker = cv2.TrackerTLD_create()
         if tracker_type == 'MEDIANFLOW':
@@ -567,21 +646,21 @@ Este capítulo apresenta os resultados obtidos a partir da metodologia construí
 
 \section{Base de dados}
 
-Para validação da metodologia proposta, foi criada uma base de imagens simulando um ambiente real de aplicação de segurança. A base é composta por 25 vídeos, capturados através do Raspberry Pi, no corredor de acesso aos laboratórios de informática da Universidade Tuiuti do Paraná. A \autoref{fig:corredor} apresenta o ambiente utilizado para os testes.
+Para validação da metodologia proposta foi criada uma base de imagens simulando um ambiente real de aplicação de segurança. A base é composta por 25 vídeos, capturados através do \textit{Raspberry Pi}, do corredor de acesso aos laboratórios de informática da Universidade Tuiuti do Paraná. A \autoref{fig:corredor} apresenta o ambiente utilizado para os testes.
 
 \begin{figure}[htb]
-    \legenda[fig:corredor]{Ambiente utilizado para criação da base de dados.}
+    \legenda[fig:corredor]{Ambiente utilizado para criação da base de dados}
     \fig{scale=0.3}{img/fundo}
     \fonteautor
 \end{figure}
 
-Ao todo foram definidos 3 cenários para validação do algoritmo de segmentação de pessoas em vídeo. O \autoref{quadro:cenarios} apresenta os cenários definidos e a quantidade de vídeos capturados.
+Ao todo foram definidos tês cenários para validação do algoritmo de segmentação de pessoas em vídeo. O \autoref{quadro:cenarios} apresenta os cenários definidos e a quantidade de vídeos capturados.
 
 \begin{quadro}[htb]
     \legenda[quadro:cenarios]{Cenários utilizados na criação das bases}
     \begin{tabular}{|c|c|c|}
         \hline
-        \textbf{Cenário} & \textbf{Quantidade de pessoas} & \textbf{Quantidade de Vídeos} \\\hline 
+        \textbf{Cenário} & \textbf{Quantidade de Pessoas} & \textbf{Quantidade de Vídeos} \\\hline 
           C1 & 1 pessoa  &  11 \\\hline
           C2 & 2 pessoas &  9 \\\hline
           C3 & 3 pessoas &  5 \\\hline
@@ -593,10 +672,10 @@ Ao todo foram definidos 3 cenários para validação do algoritmo de segmentaç�
 \end{quadro}
 
 
-Cada vídeo é composto por pessoas se aproximando ou se afastando da câmera. A \autoref{fig:exemplo-video1} apresenta um exemplo de vídeo composto por uma pessoa. As Figuras~\ref{v1a}--\ref{v1c} mostram quadros da pessoa se afastando do vídeo, e as Figuras~\ref{v1d}--\ref{v1f} mostram quadros da pessoa se aproximando do vídeo.
+Cada vídeo é composto por pessoas se aproximando ou se afastando da câmera. A \autoref{fig:exemplo-video1} apresenta um exemplo de vídeo composto por uma pessoa. As Figuras~\ref{v1a}-\ref{v1c} mostram quadros da pessoa se afastando do vídeo, e as Figuras~\ref{v1d}-\ref{v1f} mostram quadros da pessoa se aproximando do vídeo.
 
 \begin{figure}[htb]
-    \legenda[fig:exemplo-video1]{Vídeo composto por uma pessoa.}
+    \legenda[fig:exemplo-video1]{Vídeo composto por uma pessoa}
     \sfig[v1a]{scale=0.2}{img/1p-0}\hfil
     \sfig[v1b]{scale=0.2}{img/1p-1}\hfil
     \sfig[v1c]{scale=0.2}{img/1p-2}
@@ -608,10 +687,10 @@ Cada vídeo é composto por pessoas se aproximando ou se afastando da câmera. A
     \fonteautor
 \end{figure}
 
-A \autoref{fig:exemplo-video2} e a \autoref{fig:exemplo-video3} apresentam exemplos de vídeos capturados com duas e três pessoas, respectivamente. Uma das dificuldades encontradas na criação da base de dados foi manter a área isolada, por se tratar de um local grande circulação de pessoas. Desta forma, em alguns vídeos apresentam pessoas circulando ao fundo, como pode ser visto na Figura~\autoref{v1a}.
+As Figuras 24 e 25 apresentam exemplos de vídeos capturados com duas e três pessoas, respectivamente. Uma das dificuldades encontradas na criação da base de dados foi manter a área isolada, isso por se tratar de um local de grande circulação de pessoas. Desta forma, em alguns vídeos apresentam pessoas circulando ao fundo, como pode ser visto na \autoref{fig:exemplo-video3}.
 
 \begin{figure}[htb]
-    \legenda[fig:exemplo-video2]{Vídeo composto por duas pessoas.}
+    \legenda[fig:exemplo-video2]{Vídeo composto por duas pessoas}
     \sfig{scale=0.2}{img/2p-0}\hfil
     \sfig{scale=0.2}{img/2p-1}\hfil
     \sfig{scale=0.2}{img/2p-2}
@@ -624,7 +703,7 @@ A \autoref{fig:exemplo-video2} e a \autoref{fig:exemplo-video3} apresentam exemp
 \end{figure}
 
 \begin{figure}[htb]
-    \legenda[fig:exemplo-video3]{Vídeo composto por três pessoas.}
+    \legenda[fig:exemplo-video3]{Vídeo composto por três pessoas}
     \sfig{scale=0.2}{img/3p-0}\hfil
     \sfig{scale=0.2}{img/3p-1}\hfil
     \sfig{scale=0.2}{img/3p-2}
@@ -636,11 +715,21 @@ A \autoref{fig:exemplo-video2} e a \autoref{fig:exemplo-video3} apresentam exemp
     \fonteautor
 \end{figure}
 
-\newpage
 
 \section{Experimentos}
 
-Os experimentos foram realizados através do processamento de cada vídeo da base de dados utilizando o método proposto no \autoref{cap:metodologia}. O processamento foi realizados no próprio Raspberry Pi, com o intuito de verificar se o dispositivo consegue processar os vídeos de maneira satisfatória. Durante a execução dos vídeos, foi realizada uma análise visual do resultado da segmentação das pessoas em vídeo. O \autoref{quadro:resultados-adaboost}, \autoref{quadro:resultados-mil}, \autoref{quadro:resultados-mf} e\autoref{quadro:resultados-tld} apresentam os resultados obtidos das execuções dos algoritmos AdaBoost, MIL, Median Flow, e TLD, respectivamente. Em cada Quadro, a primeira coluna apresenta o cenário analisado, descritos no \autoref{quadro:cenarios}. As demais colunas apresentam a taxa de acerto para a detecção  de uma, duas ou três pessoas em cena, respectivamente. 
+Os experimentos foram realizados através do processamento de cada vídeo da base de dados utilizando os métodos propostos no \autoref{cap:metodologia}. O processamento foi realizado no próprio Raspberry Pi, com o intuito de verificar se o dispositivo consegue processar os vídeos de maneira satisfatória. Durante a execução dos vídeos, foi realizada uma análise visual do resultado da segmentação das pessoas em vídeo. 
+
+
+Os quadros a seguir apresentam os resultados obtidos das execuções dos algoritmos AdaBoost, MIL, Median Flow, TLD e KCF, respectivamente. Em cada Quadro, a primeira coluna apresenta o cenário analisado, descritos no \autoref{quadro:cenarios}. As demais colunas apresentam a taxa de acerto para a detecção  de uma, duas ou três pessoas em cena, respectivamente. 
+A definção \textit{n/a} refre-se à relação onde não consta o número de pessoas esperado no cenário apresentado. A taxa de acerto define-se pela razão da quantidade de pessoas detectada pelo total de pessoas alocadas em todos os cenários.
+
+\begin{grafico}[htb]
+    \centering
+    \legenda[fig:grafico-resultado-adaboost]{Resultados da aplicação do algoritmo AdaBoost nos cenários construídos}
+    \fig{scale=1.0}{img/grafico_resultado_adaboost}
+    \fonteautor
+\end{grafico}
 
 \begin{quadro}[htb]
     \legenda[quadro:resultados-adaboost]{Resultados obtidos para o AdaBoost}
@@ -656,8 +745,15 @@ Os experimentos foram realizados através do processamento de cada vídeo da bas
     \fonteautor
 \end{quadro}
 
+\begin{grafico}[htb]
+    \centering
+    \legenda[fig:grafico-resultado-mil]{Resultados da aplicação do algoritmo Multiple Instance Learning nos cenários construídos}
+    \fig{scale=1.0}{img/grafico_resultado_mil}
+    \fonteautor
+\end{grafico}
+
 \begin{quadro}[htb]
-    \legenda[quadro:resultados-mil]{Resultados obtidos para o MIL}
+    \legenda[quadro:resultados-mil]{Resultados obtidos para o Multiple Instance Learning}
     \begin{tabular}{|c||c|c|c|}
         \hline
         \textbf{Cenário} &  \textbf{1 pessoa} & \textbf{2 pessoas} & \textbf{3 pessoas} \\ 
@@ -670,19 +766,12 @@ Os experimentos foram realizados através do processamento de cada vídeo da bas
     \fonteautor
 \end{quadro}
 
-\begin{quadro}[htb]
-    \legenda[quadro:resultados-tld]{Resultados obtidos para o TLD}
-    \begin{tabular}{|c||c|c|c|}
-        \hline
-        \textbf{Cenário} &  \textbf{1 pessoa} & \textbf{2 pessoas} & \textbf{3 pessoas} \\ 
-        \hline\hline
-        C1 & 100\%  & n/a & n/a\\\hline
-        C2 & 88\%  & 67\% & n/a \\\hline
-        C3 & 100\%  & 80\% & 40\% \\\hline
-
-    \end{tabular}
+\begin{grafico}[htb]
+    \centering
+    \legenda[fig:grafico-resultado-medianflow]{Resultados da aplicação do algoritmo Median Flow nos cenários construídos}
+    \fig{scale=1.0}{img/grafico_resultado_medianflow}
     \fonteautor
-\end{quadro}
+\end{grafico}
 
 \begin{quadro}[htb]
     \legenda[quadro:resultados-mf]{Resultados obtidos para o Median Flow}
@@ -697,29 +786,121 @@ Os experimentos foram realizados através do processamento de cada vídeo da bas
     \end{tabular}
     \fonteautor
 \end{quadro}
-       	
 
-Como pode ser observado nos resultados, o algoritmo Adaboost, se mostrou eficiente para os cenários com apenas uma pessoa, se perdendo quando o número de pessoas aumenta em cena. Dos algoritmos, o TLD e o Median Flow não conseguiram detectar o movimento nos vídeos com apenas uma pessoa. 
+\begin{grafico}[htb]
+    \centering
+    \legenda[fig:grafico-resultado-tld]{Resultados da aplicação do algoritmo Tracking Learning Detection nos cenários construídos}
+    \fig{scale=1.0}{img/grafico_resultado_tld}
+    \fonteautor
+\end{grafico}
+
+\begin{quadro}[htb]
+    \legenda[quadro:resultados-tld]{Resultados obtidos para o Tracking-Learning-Detection}
+    \begin{tabular}{|c||c|c|c|}
+        \hline
+        \textbf{Cenário} &  \textbf{1 pessoa} & \textbf{2 pessoas} & \textbf{3 pessoas} \\ 
+        \hline\hline
+        C1 & 100\%  & n/a & n/a\\\hline
+        C2 & 88\%  & 67\% & n/a \\\hline
+        C3 & 100\%  & 80\% & 40\% \\\hline
+
+    \end{tabular}
+    \fonteautor
+\end{quadro}
+
+\begin{grafico}[htb]
+    \centering
+    \legenda[fig:grafico-resultado-kcf]{Resultados da aplicação do algoritmo Kernelized Correlation Filters nos cenários construídos}
+    \fig{scale=1.0}{img/grafico_resultado_kcf}
+    \fonteautor
+\end{grafico}
+
+\begin{quadro}[htb]
+    \legenda[quadro:resultados-kcf]{Resultados obtidos para o Kernelized Correlation Filters}
+    \begin{tabular}{|c||c|c|c|}
+        \hline
+        \textbf{Cenário} &  \textbf{1 pessoa} & \textbf{2 pessoas} & \textbf{3 pessoas} \\ 
+        \hline\hline
+        C1 & 100\%  & n/a & n/a\\\hline
+        C2 & 96\%  & 67\% & n/a \\\hline
+        C3 & 100\%  & 60\% & 40\% \\\hline
+
+    \end{tabular}
+    \fonteautor
+\end{quadro}
+
+Como pode ser observado nos resultados, o algoritmo Adaboost obteve uma taxa de acerto de aproximadamente 70,6\%, resultado da grande variação de pesos por conta da variação do número de pessoas nos cenários propostos, causando um maior número de falsos positivos.
+
+O algoritmo MIL apresentou melhor resultado em todos os cenários, identificando todas as pessoas presentes nas cenas. Esse algoritmo mostrou ser robusto para o rastreamento de pessoas se afastando e se aproximando da câmera por analisar um conjunto de múltiplas instâncias do vídeo e rotulá-las com a finalidade de comparar com a delimitação criada da possível localização de uma pessoa no vídeo.
+
+Com o método de rastreamento TLD, a taxa de acerto foi próxima a 79,2\%, mostrando que, para as cenas onde existam mais de uma pessoa em movimento, o algoritimo temporariamente descarta um ponto dado como positivo para avaliar a trajetória da nova pessoa, afetando assim o resultado.
+
+O método Median Flow obteve uma taxa de acerto de cerca de 70,6\%, por se tratar de uma base onde a orientação e posição das pessoas rastreadas varia consideravelmente, o método calcula a mediana dos pontos centrais do objeto rastreado, dessa maneira, quando há mais de uma pessoa em cena, existe a perda desse ponto central ou a mudança para outra pessoa que tenha seu ponto central em maior movimento no \textit{frame}, afetando assim o cálculo.
+
+Já o algoritmo KCF apresentou uma taxa de acerto de 77,16\% para a amostragem construída, onde se mostrou eficiente nos cenários onde é identificada apenas uma pessoa. 
+
+Com a análise dos resultados, pode-se afirmar que o uso do algoritmo MIL em sistemas de segurança e vigilância com um alto nível de precisão em imagens capturadas pelo Raspberry 
+
+A \autoref{fig:exemplo_acertos} demonstra exemplos onde o rasteamento foi bem sucedido e puderam-se observar as pessoas destacadas.
+A \autoref{fig:exemplo_erros} demonstra \textit{frames} onde as técnicas de rastreamento não obtiveram resultados satisfatórios.
+
+Os resultados apresentados na \autoref{fig:exemplo_acertos} são satisfatórios pois em todos os \textit{frames} do vídeo, foi possível rastrear todas a pessoas das cenas.
+
+Os resultados apresentados nas Figuras 27 (a) e (b) demonstram a saída de erro onde não foi possível localizar ao menos uma pessoa na cena em todos os \textit{frames} da figura.
+Já as Figuras 27 (c) e (d) apresentam os frames da saída onde foram detectadas pessoas, porém não todas as presentes no vídeo ou em \textit{frames} do mesmo, causando a perda de informações no rasteamento 
+
+\begin{figure}[htb]
+    \legenda[fig:exemplo_acertos]{Acertos do rastreamento aplicado aos vídeos capturados}
+    \sfig{scale=0.2}{img/acerto_1_1}\hfil
+    \sfig{scale=0.2}{img/acerto_1_2}\hfil
+    \sfig{scale=0.2}{img/acerto_2_1}
+
+    \sfig{scale=0.2}{img/acerto_2_2}\hfil
+    \sfig{scale=0.2}{img/acerto_3_1}\hfil
+    \sfig{scale=0.2}{img/acerto_3_2}
+    
+    \fonteautor
+\end{figure}
+
+\begin{figure}[htb]
+    \legenda[fig:exemplo_erros]{Erros do rastreamento aplicado aos vídeos capturados}
+    \sfig{scale=0.3}{img/erro_2_1}\hfil
+    \sfig{scale=0.3}{img/erro_2_2}
+    
+    \sfig{scale=0.3}{img/erro_3_1}\hfil
+    \sfig{scale=0.3}{img/erro_3_2}
+    
+    \fonteautor
+\end{figure}
 
 %%% TODO: INCLUIR EXEMPLO DE IMAGEM DOS DOIS VIDEOS QUE NAO DERAM CERTO PRO TLD E MEDIAN FLOW
 
-O algoritmo MIL apresentou melhor resultado em todos os cenários. Este algoritmo mostrou ser robusto para o rastreamento de pessoas se afastando e se aproximando do vídeo. Com isso, pode-se afirmar que o uso do MIL em imagens capturadas pelo Raspberry podem ser utilizadas em sistemas de segurança e vigilância com um alto nível de precisão.
 
 
 % -----------------------------------------------------------------------
 % -----------------------------------------------------------------------
-\chapter{Considerações Finais}
+\chapter{Conclusões}
 \label{cap:conclusao}
 
-
 %%% TODO: DESCREVER O OBJETIVO DESTE TRABALHO: ESTUDAR ALGORITMOS DE RASTREAMENTO + RASPBERRY
+Neste trabalho foram abordados métodos para o rastramento de pessoas, implementados dentro da biblioteca \textit{OpenCV} para vídeos capturados com o módulo de câmera do \textit{Raspberry Pi}, sendo seu processamento realizado no mesmo dispositivo.
 
 %%% DESCREVER QUE FOI CRIADA UMA BASE DADOS COM VIDEOS NA UTP, DETERMINANDO 3 CENARIOS
+Como base para os testes foram determinados cenários de captura, os quais foram adquiridos dentro da Universidade Tuiuti do Paraná, em seu corredor de acesso aos laboratórios de informática.
+Foram montados cenários de uma pessoa, duas pessoas e três pessoas circulando pelo corredor.
+
+Para cada cenário as imagens de vídeo capturadas simulam a circulação em um ambiente onde pessoas podem ser detectadas tanto movimentando-se em direção à câmera quanto afastando-se do local onde a câmera foi instalada.
 
 %%% DESCREVER QUE O MIL TEVE A MELHOR TAXA DE ACERTO
+Os vídeos capturados foram submetidos à abordagem de quatro diferentes algoritmos de rastreamento, esses implementados dentro da biblioteca \textit{OpenCV}, para verificar a taxa de acerto e confiabilidade desses algoritmos aplicados à base montada.
+
+Após suas validações, pode-se verificar que o método de rastreamento MIL foi o que obteve melhor taxa de identificação, em aproximadamente 100\% da base construída nos três cenários.
+
+Como conclusão do estudo das técnicas de rastreamento implementadas dentro da \textit{OpenCV}, observou-se que os resultados dentro do dispositivo \textit{Raspberry Pi} mostraram a eficiencia de técnicas de PDI em sua arquitetura, uma vez que a biblioteca foi compilada diretamente nela. 
 
 %%% TRABALHOS FUTUROS: UTILIZAR O SISTEMA PROPOSTO EM OUTROS TIPOS DE AMBIENTES, POR EXEMPLO, DENTRO DE SALAS DE AULA OU BIBLIOTECAS PARA VERIFICAR SE EXISTEM PESSOAS DENTRO DO AMBIENTE
-
+Como sugestão de trabalhos futuros indica-se o uso do sistema proposto em outro ambiente, como dentro de salas de aulas ou em bibliotecas, para validar a movimentação de pessoas.
+Outra melhoria possível para o sistema proposto é a definição no algoritmo e separação automática das pessoas detectadas, possibilitando assim a contagem e definição de possíveis falsos positivos.
 
 
 
